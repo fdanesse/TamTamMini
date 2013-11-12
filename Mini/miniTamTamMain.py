@@ -14,7 +14,6 @@ import xdrlib
 
 from math import sqrt
 
-from common.Util.ThemeWidgets import RoundVBox # Descripcion ?
 from common.Util.ThemeWidgets import ImageVScale # Descripcion ?
 from common.Util.ThemeWidgets import RoundHBox # Descripcion ?
 from common.Util.ThemeWidgets import ImageToggleButton # Descripcion ?
@@ -249,10 +248,7 @@ class miniTamTamMain(gtk.EventBox):
             Area Izquierda del Panel Principal.
         """
         
-        slidersBox = RoundVBox(
-            fillcolor=Config.PANEL_COLOR,
-            bordercolor=Config.PANEL_BCK_COLOR,
-            radius=Config.PANEL_RADIUS)
+        slidersBox = gtk.VBox()
             
         slidersBox.set_border_width(Config.PANEL_SPACING)
 
@@ -414,10 +410,7 @@ class miniTamTamMain(gtk.EventBox):
         self.tooltips.set_tip(generateBtn, Tooltips.GEN)
 
         # drums
-        drum_box = RoundVBox(
-            fillcolor=Config.PANEL_COLOR,
-            bordercolor=Config.PANEL_BCK_COLOR,
-            radius=Config.PANEL_RADIUS)
+        drum_box = gtk.VBox()
 
         drum_scroll = gtk.ScrolledWindow()
         drum_scroll.set_policy(
