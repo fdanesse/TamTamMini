@@ -12,19 +12,7 @@ import random
 import time
 import xdrlib
 
-import sugar.graphics.style as style
-
 from math import sqrt
-from common.Util.NoteDB import PARAMETER
-from common.port.scrolledbox import VScrolledBox
-
-import common.Util.Network as Net
-
-import common.Config as Config
-from common.Config import imagefile # Descripcion ?
-
-from Mini.miniToolbars import playToolbar
-from Mini.miniToolbars import recordToolbar
 
 from common.Util.ThemeWidgets import RoundVBox # Descripcion ?
 from common.Util.ThemeWidgets import ImageVScale # Descripcion ?
@@ -39,19 +27,29 @@ from common.Util.NoteDB import Note
 from common.Util.CSoundClient import new_csound_client
 from common.Util import InstrumentDB
 from common.Util.Instruments import DRUMCOUNT
+from common.Util.Trackpad import Trackpad
+from common.Util import OS
+from common.Util.NoteDB import PARAMETER
+
+from common.Config import imagefile # Descripcion ?
 
 from Fillin import Fillin
 from KeyboardStandAlone import KeyboardStandAlone
 from MiniSequencer import MiniSequencer
 from Loop import Loop
-
+from ScrolledBox import ScrolledBox
 from RythmGenerator import generator # Descripcion ?
 
-from common.Util.Trackpad import Trackpad
+import sugar.graphics.style as style
+
 from Mini.InstrumentPanel import InstrumentPanel
-from common.Util import OS
+from Mini.miniToolbars import playToolbar
+from Mini.miniToolbars import recordToolbar
 
 from gettext import gettext as _
+
+import common.Util.Network as Net
+import common.Config as Config
 
 Tooltips = Config.Tooltips
 
@@ -422,7 +420,11 @@ class miniTamTamMain(gtk.EventBox):
             bordercolor=Config.PANEL_BCK_COLOR,
             radius=Config.PANEL_RADIUS)
 
-        drum_scroll = VScrolledBox(scroll_policy=gtk.POLICY_NEVER)
+        drum_scroll = ScrolledBox(
+            gtk.ORIENTATION_VERTICAL,
+            arrows_policy=gtk.POLICY_NEVER,
+            scroll_policy=gtk.POLICY_AUTOMATIC)
+            
         drum_scroll.set_viewport(drum_box)
         
         drum_scroll.modify_bg(gtk.STATE_NORMAL,
