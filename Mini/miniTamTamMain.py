@@ -16,7 +16,7 @@ from math import sqrt
 
 from common.Util.ThemeWidgets import ImageVScale # Descripcion ?
 from common.Util.ThemeWidgets import ImageToggleButton # Descripcion ?
-from common.Util.ThemeWidgets import ImageButton # Descripcion ?
+from common.Util.ThemeWidgets import ImageButton # Descripcion: botón Dados
 from common.Util.ThemeWidgets import ImageRadioButton # Descripcion ?
 
 from common.Util.CSoundNote import CSoundNote
@@ -382,18 +382,13 @@ class miniTamTamMain(gtk.EventBox):
             
         generateBtnSub.set_border_width(Config.PANEL_SPACING)
 
-        #playImg = gtk.Image()
-        #playImg.set_from_icon_name('media-playback-start', gtk.ICON_SIZE_LARGE_TOOLBAR)
         self.playButton = ImageToggleButton(
             'miniplay.png', 'stop.png')
-            
-        #self.playButton.set_relief(gtk.RELIEF_NONE)
-        #self.playButton.set_image(playImg)
+
         self.playButton.connect(
             'clicked', self.handlePlayButton)
             
-        generateBtnSub.pack_start(self.playButton)
-        #self.playButton.set_tooltip(_('Play / Stop'))
+        generateBtnSub.pack_start(self.playButton, False, False, 0)
 
         generateBtn = ImageButton('dice.png',
             clickImg_path='diceblur.png')
@@ -402,7 +397,7 @@ class miniTamTamMain(gtk.EventBox):
             'button-press-event',
             self.handleGenerateBtn)
             
-        generateBtnSub.pack_start(generateBtn)
+        generateBtnSub.pack_end(generateBtn, False, False, 0)
         self.tooltips.set_tip(generateBtn, Tooltips.GEN)
 
         # drums
