@@ -15,7 +15,7 @@ import xdrlib
 from math import sqrt
 
 from common.Util.ThemeWidgets import ImageVScale # Descripcion ?
-from common.Util.ThemeWidgets import ImageToggleButton # Descripcion ?
+from common.Util.ThemeWidgets import ImageToggleButton # Descripcion: botón play
 from common.Util.ThemeWidgets import ImageButton # Descripcion: botón Dados
 from common.Util.ThemeWidgets import ImageRadioButton # Descripcion ?
 
@@ -383,12 +383,12 @@ class miniTamTamMain(gtk.EventBox):
         generateBtnSub.set_border_width(Config.PANEL_SPACING)
 
         self.playButton = ImageToggleButton(
-            'miniplay.png', 'stop.png')
+            'miniplay.png', clickImg_path='stop.png')
 
         self.playButton.connect(
             'clicked', self.handlePlayButton)
             
-        generateBtnSub.pack_start(self.playButton, False, False, 0)
+        generateBtnSub.pack_start(self.playButton, True, True, 0)
 
         generateBtn = ImageButton('dice.png',
             clickImg_path='diceblur.png')
@@ -397,7 +397,7 @@ class miniTamTamMain(gtk.EventBox):
             'button-press-event',
             self.handleGenerateBtn)
             
-        generateBtnSub.pack_end(generateBtn, False, False, 0)
+        generateBtnSub.pack_end(generateBtn, True, True, 0)
         self.tooltips.set_tip(generateBtn, Tooltips.GEN)
 
         # drums
