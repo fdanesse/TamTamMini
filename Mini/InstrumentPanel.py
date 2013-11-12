@@ -11,7 +11,6 @@ import time
 import common.Config as Config
 
 from common.Util.ThemeWidgets import ImageRadioButton
-from common.Util.ThemeWidgets import RoundVBox
 from common.Util.ThemeWidgets import RoundHBox
 from common.Util.ThemeWidgets import ImageRadioButton2
 
@@ -235,11 +234,8 @@ class InstrumentPanel(gtk.EventBox):
             category = Config.CATEGORIES[i]
             
             if loadStage[2] == 0:
-                # Descripcion: Botón de Categoría de Instrumentos
-                self.loadData["btnBox"] = RoundVBox(
-                    fillcolor = Config.CATEGORY_BCK_COLOR,
-                    bordercolor = Config.PANEL_BCK_COLOR,
-                    radius = Config.PANEL_RADIUS)
+                ### Descripcion: Botón de Categoría de Instrumentos
+                self.loadData["btnBox"] = gtk.HBox()
 
                 self.loadData["btnBox"].set_border_width(Config.PANEL_SPACING)
                 loadStage[2] = 1
@@ -248,7 +244,7 @@ class InstrumentPanel(gtk.EventBox):
                     return False
 
             if loadStage[2] == 1:
-                # Descripcion: Imagen en Botones de Categorias
+                ### Descripcion: Imagen en Botones de Categorias
                 self.loadData["btn"] = ImageRadioButton2(
                     self.firstTbBtn,
                     category + '.png', category + 'sel.png',
@@ -294,10 +290,7 @@ class InstrumentPanel(gtk.EventBox):
             instrument = self.instrumentList["all"][i]
             
             if loadStage[2] == 0:
-                self.loadData["instBox"] = RoundVBox(
-                    fillcolor = Config.INST_BCK_COLOR,
-                    bordercolor = Config.INSTRUMENT_GRID_COLOR,
-                    radius = Config.PANEL_RADIUS)
+                self.loadData["instBox"] = gtk.VBox()
                     
                 self.loadData["instBox"].set_border_width(Config.PANEL_SPACING)
                 loadStage[2] = 1
@@ -528,11 +521,8 @@ class DrumPanel(gtk.EventBox):
         self.drums = {}
         
         for drumkit in self.instrumentList:
-            instBox = RoundVBox(
-                fillcolor = Config.INST_BCK_COLOR,
-                bordercolor = Config.PANEL_COLOR,
-                radius = Config.PANEL_RADIUS)
-                
+            instBox = gtk.VBox()
+            
             instBox.set_border_width(Config.PANEL_SPACING)
             
             self.drums[drumkit] = ImageRadioButton(
