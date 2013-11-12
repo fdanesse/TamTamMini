@@ -15,7 +15,6 @@ import xdrlib
 from math import sqrt
 
 from common.Util.ThemeWidgets import ImageVScale # Descripcion ?
-from common.Util.ThemeWidgets import RoundHBox # Descripcion ?
 from common.Util.ThemeWidgets import ImageToggleButton # Descripcion ?
 from common.Util.ThemeWidgets import ImageButton # Descripcion ?
 from common.Util.ThemeWidgets import ImageRadioButton # Descripcion ?
@@ -379,10 +378,7 @@ class miniTamTamMain(gtk.EventBox):
         slidersBoxSub.pack_start(volumeSliderBox)
         slidersBox.pack_start(slidersBoxSub)
 
-        generateBtnSub = RoundHBox(
-            fillcolor=Config.PANEL_COLOR,
-            bordercolor=Config.PANEL_BCK_COLOR,
-            radius=Config.PANEL_RADIUS)
+        generateBtnSub = gtk.HBox()
             
         generateBtnSub.set_border_width(Config.PANEL_SPACING)
 

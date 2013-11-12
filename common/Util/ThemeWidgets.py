@@ -152,7 +152,7 @@ widget "*%s*" style "scale_style"
             self.set_value(round(
                 self.snap * self.get_value()) / self.snap)
 
-
+'''
 class RoundHBox(gtk.HBox):
     
     def __init__( self, radius = 5,
@@ -357,7 +357,7 @@ class RoundHBox(gtk.HBox):
 
         gc.foreground = saveForeground
         return False
-
+'''
 
 class ImageButton(gtk.Button):
     

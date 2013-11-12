@@ -11,7 +11,6 @@ import time
 import common.Config as Config
 
 from common.Util.ThemeWidgets import ImageRadioButton
-from common.Util.ThemeWidgets import RoundHBox
 from common.Util.ThemeWidgets import ImageRadioButton2
 
 from common.Util import InstrumentDB
@@ -512,10 +511,7 @@ class DrumPanel(gtk.EventBox):
         
         firstBtn = None
         
-        btnBox = RoundHBox(
-            fillcolor = '#6F947B',
-            bordercolor = Config.PANEL_BCK_COLOR,
-            radius = Config.PANEL_RADIUS)
+        btnBox = gtk.HBox()
             
         btnBox.set_border_width(Config.PANEL_SPACING)
         self.drums = {}
