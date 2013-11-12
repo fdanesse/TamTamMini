@@ -37,7 +37,6 @@ from Fillin import Fillin
 from KeyboardStandAlone import KeyboardStandAlone
 from MiniSequencer import MiniSequencer
 from Loop import Loop
-from ScrolledBox import ScrolledBox
 from RythmGenerator import generator # Descripcion ?
 
 import sugar.graphics.style as style
@@ -420,12 +419,12 @@ class miniTamTamMain(gtk.EventBox):
             bordercolor=Config.PANEL_BCK_COLOR,
             radius=Config.PANEL_RADIUS)
 
-        drum_scroll = ScrolledBox(
-            gtk.ORIENTATION_VERTICAL,
-            arrows_policy=gtk.POLICY_NEVER,
-            scroll_policy=gtk.POLICY_AUTOMATIC)
+        drum_scroll = gtk.ScrolledWindow()
+        drum_scroll.set_policy(
+            gtk.POLICY_AUTOMATIC,
+            gtk.POLICY_AUTOMATIC)
             
-        drum_scroll.set_viewport(drum_box)
+        drum_scroll.add_with_viewport(drum_box)
         
         drum_scroll.modify_bg(gtk.STATE_NORMAL,
             style.Color(Config.PANEL_BCK_COLOR).get_gdk_color())
