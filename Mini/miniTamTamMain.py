@@ -14,7 +14,7 @@ import xdrlib
 
 from math import sqrt
 
-from common.Util.ThemeWidgets import ImageVScale # Descripcion ?
+from common.Util.ThemeWidgets import ImageVScale # Descripcion: Slicer
 from common.Util.ThemeWidgets import ImageToggleButton # Descripcion: botón play
 from common.Util.ThemeWidgets import ImageButton # Descripcion: botón Dados
 from common.Util.ThemeWidgets import ImageRadioButton # Descripcion: botón de instrumento
@@ -29,7 +29,7 @@ from common.Util.Trackpad import Trackpad
 from common.Util import OS
 from common.Util.NoteDB import PARAMETER
 
-from common.Config import imagefile # Descripcion ?
+from common.Config import imagefile
 
 from Fillin import Fillin
 from KeyboardStandAlone import KeyboardStandAlone
@@ -414,7 +414,6 @@ class miniTamTamMain(gtk.EventBox):
         self.rightBox.pack_start(slidersBox, False, False, 0)
 
         ### drum box
-        
         drum_box = gtk.Table(rows=3, columns=2, homogeneous=True)
         
         drum_scroll = gtk.ScrolledWindow()

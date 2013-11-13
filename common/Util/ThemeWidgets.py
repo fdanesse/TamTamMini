@@ -10,11 +10,6 @@ import gtk
 from common.Config import imagefile
 
 from sugar.graphics.combobox import ComboBox
-from sugar.graphics.palette import WidgetInvoker
-
-class ITYPE:
-    PIXBUF = 0
-    PIXMAP = 1
 
 
 class ImageVScale(gtk.VScale):
@@ -66,7 +61,7 @@ widget "*%s*" style "scale_style"
         self.pixbufWidth = self.sliderPixbuf.get_width()
         self.pixbufHeight = self.sliderPixbuf.get_height()
         self.sliderBorder = slider_border
-        self.sliderBorderMUL2 = self.sliderBorder*2
+        self.sliderBorderMUL2 = self.sliderBorder * 2
 
         self.set_draw_value(False)
 

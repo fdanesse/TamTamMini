@@ -1,8 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Corregido:
+#   12/11/2013 Flavio Danesse
+#   fdanesse@gmail.com - fdanesse@activitycentral.com
+
 import commands
 import logging
 import os
 
 import common.Config as Config
+
 
 def system(*args):
     cmd = ' '.join(args)
@@ -12,6 +20,7 @@ def system(*args):
     logging.debug('[system][out] %d: %s' % status)
 
     return status
+
 
 def arecord(duration, crop_csd, dst):
     tmp_file = os.path.join(Config.TMP_DIR, 'tempMic.wav')
