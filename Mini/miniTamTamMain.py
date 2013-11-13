@@ -17,7 +17,7 @@ from math import sqrt
 from common.Util.ThemeWidgets import ImageVScale # Descripcion ?
 from common.Util.ThemeWidgets import ImageToggleButton # Descripcion: botón play
 from common.Util.ThemeWidgets import ImageButton # Descripcion: botón Dados
-from common.Util.ThemeWidgets import ImageRadioButton # Descripcion ?
+from common.Util.ThemeWidgets import ImageRadioButton # Descripcion: botón de instrumento
 
 from common.Util.CSoundNote import CSoundNote
 from common.Util import NoteDB
@@ -241,17 +241,11 @@ class miniTamTamMain(gtk.EventBox):
             self.network.setMode(Net.MD_WAIT)
             #self.activity.activity_toolbar.share.hide()
 
-    def drawGeneration(self):
+    def __make_geneSlider(self):
         """
-        Descripcion:
-            Area Izquierda del Panel Principal.
+        slider 1
         """
         
-        slidersBox = gtk.VBox()
-            
-        slidersBox.set_border_width(Config.PANEL_SPACING)
-
-        geneSliderBox = gtk.VBox()
         self.geneSliderBoxImgTop = gtk.Image()
         self.geneSliderBoxImgTop.set_from_file(
             imagefile('complex6.png'))
@@ -274,15 +268,13 @@ class miniTamTamMain(gtk.EventBox):
             "button-release-event",
             self.handleGenerationSliderRelease)
             
-        geneSliderBox.pack_start(
-            self.geneSliderBoxImgTop, False, padding=10)
-            
-        geneSliderBox.pack_start(
-            self.geneSlider, True, 20)
-            
         self.tooltips.set_tip(self.geneSlider, Tooltips.COMPL)
+        
+    def __make_beatSlider(self):
+        """
+        slider 2
+        """
 
-        beatSliderBox = gtk.VBox()
         self.beatSliderBoxImgTop = gtk.Image()
         self.beatSliderBoxImgTop.set_from_file(
             imagefile('beat3.png'))
@@ -305,17 +297,16 @@ class miniTamTamMain(gtk.EventBox):
             "button-release-event",
             self.handleBeatSliderRelease)
             
-        beatSliderBox.pack_start(
-            self.beatSliderBoxImgTop,
-            False, padding=10)
-            
-        beatSliderBox.pack_start(self.beatSlider, True, 20)
         self.tooltips.set_tip(self.beatSlider, Tooltips.BEAT)
+
+    def __make_tempoSlider(self):
+        """
+        slider 3
+        """
 
         self.delayedTempo = 0 # used to store tempo updates while the slider is active
         self.tempoSliderActive = False
 
-        tempoSliderBox = gtk.VBox()
         self.tempoSliderBoxImgTop = gtk.Image()
         self.tempoSliderBoxImgTop.set_from_file(
             imagefile('tempo5.png'))
@@ -326,27 +317,27 @@ class miniTamTamMain(gtk.EventBox):
             upper=Config.PLAYER_TEMPO_UPPER,
             step_incr=1, page_incr=1, page_size=1)
             
-        tempoSlider = ImageVScale(
+        self.tempoSlider = ImageVScale(
             'sliderbutvert.png',
             self.tempoAdjustment, 5)
             
-        tempoSlider.set_inverted(True)
+        self.tempoSlider.set_inverted(True)
         self.tempoAdjustmentHandler = self.tempoAdjustment.connect(
             "value_changed", self.handleTempoSliderChange)
             
-        tempoSlider.connect("button-press-event",
+        self.tempoSlider.connect("button-press-event",
             self.handleTempoSliderPress)
             
-        tempoSlider.connect("button-release-event",
+        self.tempoSlider.connect("button-release-event",
             self.handleTempoSliderRelease)
-            
-        tempoSliderBox.pack_start(
-            self.tempoSliderBoxImgTop, False, padding=10)
-            
-        tempoSliderBox.pack_start(tempoSlider, True)
-        self.tooltips.set_tip(tempoSlider, Tooltips.TEMPO)
+        
+        self.tooltips.set_tip(self.tempoSlider, Tooltips.TEMPO)
+        
+    def __make_volumeSlider(self):
+        """
+        slider 4
+        """
 
-        volumeSliderBox = gtk.VBox()
         self.volumeSliderBoxImgTop = gtk.Image()
         self.volumeSliderBoxImgTop.set_from_file(
             imagefile('volume2.png'))
@@ -356,104 +347,111 @@ class miniTamTamMain(gtk.EventBox):
             upper=200, step_incr=1,
             page_incr=1, page_size=1)
             
-        volumeSlider = ImageVScale(
+        self.volumeSlider = ImageVScale(
             'sliderbutbleu.png',
             self.volumeAdjustment, 5)
             
-        volumeSlider.set_inverted(True)
+        self.volumeSlider.set_inverted(True)
         self.volumeAdjustment.connect(
             "value_changed", self.handleVolumeSlider)
             
         #volumeSlider.connect("button-release-event", self.handleVolumeSliderRelease)
-        volumeSliderBox.pack_start(
-            self.volumeSliderBoxImgTop, False, padding=10)
-            
-        volumeSliderBox.pack_start(volumeSlider, True)
-        self.tooltips.set_tip(volumeSlider, Tooltips.VOL)
+        
+        self.tooltips.set_tip(self.volumeSlider, Tooltips.VOL)
+        
+    def drawGeneration(self):
+        """
+        Descripcion:
+            Area Izquierda del Panel Principal.
+        """
+        
+        slidersBox = gtk.VBox()
+        slidersBox.set_border_width(Config.PANEL_SPACING)
 
-        slidersBoxSub = gtk.HBox()
-        slidersBoxSub.pack_start(beatSliderBox)
-        slidersBoxSub.pack_start(geneSliderBox)
-        slidersBoxSub.pack_start(tempoSliderBox)
-        slidersBoxSub.pack_start(volumeSliderBox)
-        slidersBox.pack_start(slidersBoxSub)
+        geneSliderBox = gtk.Table(rows=6, columns=4, homogeneous=True)
+        
+        ### slider 1
+        self.__make_geneSlider()
+        geneSliderBox.attach(self.geneSliderBoxImgTop, 0, 1, 0, 1)
+        geneSliderBox.attach(self.geneSlider, 0, 1, 1, 4)
+        
+        ### slider 2
+        self.__make_beatSlider()
+        geneSliderBox.attach(self.beatSliderBoxImgTop, 1, 2, 0, 1)
+        geneSliderBox.attach(self.beatSlider, 1, 2, 1, 4)
 
-        generateBtnSub = gtk.HBox()
-            
-        generateBtnSub.set_border_width(Config.PANEL_SPACING)
-
+        ### slider 3
+        self.__make_tempoSlider()
+        geneSliderBox.attach(self.tempoSliderBoxImgTop, 2, 3, 0, 1)
+        geneSliderBox.attach(self.tempoSlider, 2, 3, 1, 4)
+        
+        ### slider 4
+        self.__make_volumeSlider()
+        geneSliderBox.attach(self.volumeSliderBoxImgTop, 3, 4, 0, 1)
+        geneSliderBox.attach(self.volumeSlider, 3, 4, 1, 4)
+        
+        ### play button
         self.playButton = ImageToggleButton(
             'miniplay.png', clickImg_path='stop.png')
 
         self.playButton.connect(
             'clicked', self.handlePlayButton)
             
-        generateBtnSub.pack_start(self.playButton, True, True, 0)
+        geneSliderBox.attach(self.playButton, 0, 2, 4, 6)
 
-        generateBtn = ImageButton('dice.png',
+        ### dice button
+        self.generateBtn = ImageButton('dice.png',
             clickImg_path='diceblur.png')
             
-        generateBtn.connect(
+        self.generateBtn.connect(
             'button-press-event',
             self.handleGenerateBtn)
-            
-        generateBtnSub.pack_end(generateBtn, True, True, 0)
-        self.tooltips.set_tip(generateBtn, Tooltips.GEN)
+        
+        geneSliderBox.attach(self.generateBtn, 2, 4, 4, 6)
+        self.tooltips.set_tip(self.generateBtn, Tooltips.GEN)
+        
+        slidersBox.pack_start(geneSliderBox, False, False, 0)
+        self.rightBox.pack_start(slidersBox, False, False, 0)
 
-        # drums
-        drum_box = gtk.VBox()
-
+        ### drum box
+        
+        drum_box = gtk.Table(rows=3, columns=2, homogeneous=True)
+        
         drum_scroll = gtk.ScrolledWindow()
         drum_scroll.set_policy(
-            gtk.POLICY_AUTOMATIC,
+            gtk.POLICY_NEVER,
             gtk.POLICY_AUTOMATIC)
-            
         drum_scroll.add_with_viewport(drum_box)
         
-        drum_scroll.modify_bg(gtk.STATE_NORMAL,
-            style.Color(Config.PANEL_BCK_COLOR).get_gdk_color())
-            
-        drum_i = 0
+        row = 0
+        col = 0
+        kit = 1
         drum_group = None
-
-        for row in range(DRUMCOUNT / 2 + DRUMCOUNT%2):
-            row_box = gtk.HBox()
-            drum_box.pack_start(row_box, False)
-
-            for col in range(2):
-                if drum_i >= DRUMCOUNT:
-                    break
-
+        
+        for c in range(0, 2):
+            for r in range(0, 3):
+                
                 drum = ImageRadioButton(
                     group=drum_group,
-                    mainImg_path='drum%dkit.png' % (drum_i + 1),
-                    altImg_path='drum%dkitselgen.png' % (drum_i +1))
-                    
+                    mainImg_path='drum%dkit.png' % kit,
+                    width=80)
+
                 drum.connect('clicked',
                     self.handleGenerationDrumBtn,
-                    'drum%dkit' % (drum_i+1))
+                    'drum%dkit' % kit)
                     
-                row_box.pack_start(drum)
+                drum_box.attach(drum, c, c+1, r, r+1)
 
-                drum_name = 'drum%dkit' % (drum_i + 1)
+                drum_name = 'drum%dkit' % kit
                 hint = self.instrumentDB.instNamed[drum_name].nameTooltip
                 self.tooltips.set_tip(drum, hint)
 
                 if not drum_group:
                     drum_group = drum
                     
-                drum_i += 1
+                kit += 1
 
-        self.rightBox.pack_start(slidersBox, False)
-        self.rightBox.pack_start(generateBtnSub, False)
-        self.rightBox.pack_start(drum_scroll)
-
-        drum_size = drum_group.get_size_request()
-        slidersBox.set_size_request(-1,
-            int(drum_size[1] * 2.3))
-            
-        self.rightBox.set_size_request(
-            int(drum_size[0] * 2.05), -1)
+        self.rightBox.pack_start(drum_scroll, True, True, 0)
 
     def loopSettingsChannel(self, channel, value):
         self.csnd.setChannel(channel, value)

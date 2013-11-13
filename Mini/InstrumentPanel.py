@@ -11,7 +11,6 @@ import time
 import common.Config as Config
 
 from common.Util.ThemeWidgets import ImageRadioButton
-from common.Util.ThemeWidgets import ImageRadioButton2
 
 from common.Util import InstrumentDB
 
@@ -244,10 +243,9 @@ class InstrumentPanel(gtk.EventBox):
 
             if loadStage[2] == 1:
                 ### Descripcion: Imagen en Botones de Categorias
-                self.loadData["btn"] = ImageRadioButton2(
+                self.loadData["btn"] = ImageRadioButton(
                     self.firstTbBtn,
-                    category + '.png', category + 'sel.png',
-                    category + 'sel.png')
+                    category + '.png', width=95)
 
                 loadStage[2] = 2
                 if timeout >= 0 and time.time() > timeout:
@@ -299,13 +297,11 @@ class InstrumentPanel(gtk.EventBox):
             if loadStage[2] == 1:
                 try:
                     self.loadData['instButton'] = ImageRadioButton(
-                        self.firstInstButton, instrument + '.png',
-                        instrument + 'sel.png')
+                        self.firstInstButton, instrument + '.png')
                         
                 except:
                     self.loadData["instButton"] = ImageRadioButton(
-                        self.firstInstButton, 'generic.png',
-                        'genericsel.png')
+                        self.firstInstButton, 'generic.png')
                         
                 loadStage[2] = 2
                 if timeout >= 0 and time.time() > timeout:
@@ -522,8 +518,7 @@ class DrumPanel(gtk.EventBox):
             instBox.set_border_width(Config.PANEL_SPACING)
             
             self.drums[drumkit] = ImageRadioButton(
-                firstBtn, drumkit + '.png',
-                drumkit + 'sel.png')
+                firstBtn, drumkit + '.png')
                 
             self.drums[drumkit].clickedHandler = self.drums[drumkit].connect(
                 'clicked', self.setDrums,drumkit)
