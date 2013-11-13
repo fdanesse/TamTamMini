@@ -26,7 +26,7 @@ class ImageVScale(gtk.VScale):
 
         image_name = imagefile(image_name)
 
-        gtk.VScale.__init__( self, adjustment )
+        gtk.VScale.__init__(self, adjustment)
 
         if snap:
             self.snap = 1 / snap
@@ -36,7 +36,7 @@ class ImageVScale(gtk.VScale):
 
         colormap = self.get_colormap()
         self.troughcolor = colormap.alloc_color(
-            trough_color, True, True )
+            trough_color, True, True)
 
         img = gtk.Image()
         img.set_from_file(image_name)
@@ -47,7 +47,7 @@ class ImageVScale(gtk.VScale):
             
         else:
             img = gtk.Image()
-            img.set_from_file( insensitive_name )
+            img.set_from_file(insensitive_name)
             self.insensitivePixbuf = img.get_pixbuf()
 
         name = image_name + "ImageVScale"
@@ -455,242 +455,36 @@ class ImageRadioButton2(gtk.RadioButton):
         self._palette.props.invoker = WidgetInvoker(self)
         self._palette.props.invoker._position_hint = WidgetInvoker.AT_CURSOR
 
-
 class ImageRadioButton(gtk.RadioButton):
 
-    def __init__(self, group, mainImg_path,
-        altImg_path, enterImg_path=None,
-        backgroundFill=None):
-            
-        mainImg_path = imagefile(mainImg_path)
-        altImg_path = imagefile(altImg_path)
-        enterImg_path = imagefile(enterImg_path)
-
+    def __init__(self, group, mainImg_path=None,
+        altImg_path=None):
+        
         gtk.RadioButton.__init__(self, group)
         
-        self.alloc = None
-        self.within = False
-        self.clicked = False
-
-        win = gtk.gdk.get_default_root_window()
-        self.gc = gtk.gdk.GC( win )
-        self.image = {}
-        self.itype = {}
-        self.iwidth = {}
-        self.iwidthDIV2 = {}
-        self.iheight = {}
-        self.iheightDIV2 = {}
-
-        self.backgroundFill = backgroundFill
-
-        def prepareImage(name, path):
+        mainImg_path = imagefile(mainImg_path)
+        altImg_path = imagefile(altImg_path)
         
-            pix = gtk.gdk.pixbuf_new_from_file_at_size(path, 115, 115)
-            
-            if pix.get_has_alpha():
-                if backgroundFill == None:
-                    self.image[name] = pix
-                    self.itype[name] = ITYPE.PIXBUF
-                    
-                else:
-                    self.image[name] = gtk.gdk.Pixmap(
-                        win, pix.get_width(), pix.get_height())
-                        
-                    colormap = self.get_colormap()
-                    self.gc.foreground = colormap.alloc_color(
-                        backgroundFill, True, True)
-                        
-                    self.image[name].draw_rectangle(
-                        self.gc, True, 0, 0,
-                        pix.get_width(), pix.get_height())
-                        
-                    self.image[name].draw_pixbuf(
-                        self.gc, pix, 0, 0, 0, 0,
-                        pix.get_width(), pix.get_height(),
-                        gtk.gdk.RGB_DITHER_NONE)
-                        
-                    self.itype[name] = ITYPE.PIXMAP
-                    
-            else:
-                self.image[name] = gtk.gdk.Pixmap(
-                    win, pix.get_width(), pix.get_height())
-                    
-                self.image[name].draw_pixbuf(
-                    self.gc, pix, 0, 0, 0, 0,
-                    pix.get_width(), pix.get_height(),
-                    gtk.gdk.RGB_DITHER_NONE)
-                    
-                self.itype[name] = ITYPE.PIXMAP
-                
-            self.iwidth[name] = pix.get_width()
-            self.iwidthDIV2[name] = self.iwidth[name] / 2
-            self.iheight[name] = pix.get_height()
-            self.iheightDIV2[name] = self.iheight[name] / 2
-
-        prepareImage("main", mainImg_path)
-        prepareImage("alt", altImg_path)
-
-        if enterImg_path != None:
-            prepareImage("enter", enterImg_path)
-            
-        else:
-            self.image["enter"] = self.image["main"]
-            self.itype["enter"] = self.itype["main"]
-            self.iwidth["enter"] = self.iwidth["main"]
-            self.iwidthDIV2["enter"] = self.iwidthDIV2["main"]
-            self.iheight["enter"] = self.iheight["main"]
-            self.iheightDIV2["enter"] = self.iheightDIV2["main"]
-
-        self.connect('enter-notify-event',self.on_btn_enter)
-        self.connect('leave-notify-event',self.on_btn_leave)
-
-        self.connect("toggled", self.toggleImage )
-        self.connect('pressed', self.pressed )
-        self.connect('released', self.released )
-        self.connect('expose-event', self.expose)
-        self.connect('size-allocate', self.size_allocate)
-
-        self.set_size_request(self.iwidth["main"], self.iheight["main"])
-
-        self.toggleImage( self )
-
-    def size_allocate(self, widget, allocation):
-        self.alloc = allocation
-        self.drawX = allocation.x + allocation.width / 2
-        self.drawY = allocation.y + allocation.height / 2
-
-    def expose(self, widget, event):
-    
-        if self.itype[self.curImage] == ITYPE.PIXBUF:
-            self.window.draw_pixbuf(
-                self.gc, self.image[self.curImage],
-                0, 0, self.drawX - self.iwidthDIV2[self.curImage],
-                self.drawY - self.iheightDIV2[self.curImage],
-                self.iwidth[self.curImage], self.iheight[self.curImage],
-                gtk.gdk.RGB_DITHER_NONE)
-                
-        else:
-            self.window.draw_drawable(
-                self.gc, self.image[self.curImage],
-                0, 0, self.drawX - self.iwidthDIV2[self.curImage],
-                self.drawY - self.iheightDIV2[self.curImage],
-                self.iwidth[self.curImage],
-                self.iheight[self.curImage])
-                
-        return True
-
-    def setImage(self, name, pix):
-    
-        if name == "main" and self.image["main"] == self.image["enter"]:
-            updateEnter = True
-            
-        else:
-            updateEnter = False
-
-        if pix.get_has_alpha():
-            if self.backgroundFill == None:
-                self.image[name] = pix
-                self.itype[name] = ITYPE.PIXBUF
-                
-            else:
-                self.image[name] = gtk.gdk.Pixmap(
-                    win, pix.get_width(), pix.get_height())
-                    
-                colormap = self.get_colormap()
-                self.gc.foreground = colormap.alloc_color(
-                    self.backgroundFill, True, True)
-                    
-                self.image[name].draw_rectangle(
-                    self.gc, True, 0, 0,
-                    pix.get_width(), pix.get_height())
-                    
-                self.image[name].draw_pixbuf(
-                    self.gc, pix, 0, 0, 0, 0,
-                    pix.get_width(), pix.get_height(),
-                    gtk.gdk.RGB_DITHER_NONE)
-                    
-                self.itype[name] = ITYPE.PIXMAP
-        else:
-            self.image[name] = gtk.gdk.Pixmap(
-                win, pix.get_width(), pix.get_height())
-                
-            self.image[name].draw_pixbuf(
-                self.gc, pix, 0, 0, 0, 0,
-                pix.get_width(), pix.get_height(),
-                gtk.gdk.RGB_DITHER_NONE )
-                
-            self.itype[name] = ITYPE.PIXMAP
-            
-        self.iwidth[name] = pix.get_width()
-        self.iwidthDIV2[name] = self.iwidth[name] / 2
-        self.iheight[name] = pix.get_height()
-        self.iheightDIV2[name] = self.iheight[name] / 2
-
-        if updateEnter:
-            self.image["enter"] = self.image["main"]
-            self.itype["enter"] = self.itype["main"]
-            self.iwidth["enter"] = self.iwidth["main"]
-            self.iwidthDIV2["enter"] = self.iwidthDIV2["main"]
-            self.iheight["enter"] = self.iheight["main"]
-            self.iheightDIV2["enter"] = self.iheightDIV2["main"]
-            self.connect('enter-notify-event',self.on_btn_enter)
-            self.connect('leave-notify-event',self.on_btn_leave)
-
-        self.queue_draw()
-
-    def toggleImage( self, widget ):
+        self.image = gtk.Image()
         
+        self.mainImg = gtk.gdk.pixbuf_new_from_file(mainImg_path)
+        self.altImg = gtk.gdk.pixbuf_new_from_file(altImg_path)
+        
+        self.image.set_from_pixbuf(self.mainImg)
+        self.set_image(self.image)
+        
+        self.set_property('draw-indicator', False)
+        self.show_all()
+        
+        self.connect("toggled", self.toggleImage)
+        
+    def toggleImage(self, widget):
+    
         if not self.get_active():
-            if self.within and self.image.has_key("enter"):
-                self.curImage = "enter"
-                
-            else:
-                self.curImage = "main"
-                
+            self.image.set_from_pixbuf(self.mainImg)
+            
         else:
-            self.curImage = "alt"
-            
-        self.queue_draw()
-
-    def pressed( self, widget ):
-        self.clicked = True
-        self.curImage = "alt"
-        self.queue_draw()
-
-    def released( self, widget ):
-        self.clicked = False
-        self.toggleImage( self )
-        
-    def on_btn_enter(self, widget, event):
-    
-        if event.mode == gtk.gdk.CROSSING_NORMAL:
-            self.within = True
-            
-            if not self.get_active() and not self.clicked:
-                self.curImage = "enter"
-                
-            else:
-                self.curImage = "alt"
-                
-            self.queue_draw()
-
-    def on_btn_leave(self, widget, event):
-    
-        if event.mode == gtk.gdk.CROSSING_NORMAL:
-            self.within = False
-            
-            if not self.get_active():
-                self.curImage = "main"
-                
-            else:
-                self.curImage = "alt"
-                
-            self.queue_draw()
-            
-    def set_palette(self, palette):
-        self._palette = palette
-        self._palette.props.invoker = WidgetInvoker(self)
-        self._palette.props.invoker._position_hint = WidgetInvoker.AT_CURSOR
+            self.image.set_from_pixbuf(self.altImg)
 
 
 class BigComboBox(ComboBox):

@@ -300,12 +300,12 @@ class InstrumentPanel(gtk.EventBox):
                 try:
                     self.loadData['instButton'] = ImageRadioButton(
                         self.firstInstButton, instrument + '.png',
-                        instrument + 'sel.png', instrument + 'sel.png')
+                        instrument + 'sel.png')
                         
                 except:
                     self.loadData["instButton"] = ImageRadioButton(
                         self.firstInstButton, 'generic.png',
-                        'genericsel.png', 'genericsel.png')
+                        'genericsel.png')
                         
                 loadStage[2] = 2
                 if timeout >= 0 and time.time() > timeout:
@@ -523,9 +523,10 @@ class DrumPanel(gtk.EventBox):
             
             self.drums[drumkit] = ImageRadioButton(
                 firstBtn, drumkit + '.png',
-                drumkit + 'sel.png', drumkit + 'sel.png')
+                drumkit + 'sel.png')
                 
-            self.drums[drumkit].clickedHandler = self.drums[drumkit].connect('clicked', self.setDrums,drumkit)
+            self.drums[drumkit].clickedHandler = self.drums[drumkit].connect(
+                'clicked', self.setDrums,drumkit)
             
             if firstBtn == None:
                 firstBtn = self.drums[drumkit]
