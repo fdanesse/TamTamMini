@@ -53,10 +53,10 @@ class InstrumentPanel(gtk.EventBox):
                 button.grab_focus()
                 break
 
-    def configure(self, setInstrument = None,
-        playInstrument = None, enterMode = False,
-        micRec = None, synthRec = None,
-        rowLen = 8, width = -1 ):
+    def configure(self, setInstrument=None,
+        playInstrument=None, enterMode=False,
+        micRec=None, synthRec=None,
+        rowLen=6, width=-1):
 
         self.setInstrument = setInstrument
         self.playInstrument = playInstrument
@@ -232,7 +232,7 @@ class InstrumentPanel(gtk.EventBox):
             category = Config.CATEGORIES[i]
             
             if loadStage[2] == 0:
-                ### Descripcion: Botón de Categoría de Instrumentos
+                ### Descripcion: Caja de Botones de Categoría de Instrumentos
                 self.loadData["btnBox"] = gtk.HBox()
 
                 self.loadData["btnBox"].set_border_width(Config.PANEL_SPACING)
@@ -245,7 +245,7 @@ class InstrumentPanel(gtk.EventBox):
                 ### Descripcion: Imagen en Botones de Categorias
                 self.loadData["btn"] = ImageRadioButton(
                     self.firstTbBtn,
-                    category + '.png', width=95)
+                    category + '.png', width=75)
 
                 loadStage[2] = 2
                 if timeout >= 0 and time.time() > timeout:
@@ -342,23 +342,39 @@ class InstrumentPanel(gtk.EventBox):
         return True
 
     def loadInstrumentViewport(self):
+
+        self.instBox = gtk.Alignment()
         
-        self.instBox = gtk.Alignment(0.5, 0, 0, 1)
+        self.instBox.set_property('xalign', 0.5)
+        self.instBox.set_property('yalign', 0.0)
 
         box = gtk.EventBox()
-        color = gtk.gdk.color_parse(Config.INSTRUMENT_GRID_COLOR)
+
+        color = gtk.gdk.color_parse(
+            Config.INSTRUMENT_GRID_COLOR)
+
         box.modify_bg(gtk.STATE_NORMAL, color)
+
         box.add(self.instBox)
 
         scrollwin = gtk.ScrolledWindow()
-        scrollwin.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
-        scrollwin.add_with_viewport(box)
-        box.get_parent().set_shadow_type(gtk.SHADOW_NONE)
-        self.mainVBox.pack_end(scrollwin)
 
+        scrollwin.set_policy(
+            gtk.POLICY_NEVER,
+            gtk.POLICY_AUTOMATIC)
+
+        scrollwin.add_with_viewport(box)
+
+        box.get_parent().set_shadow_type(gtk.SHADOW_NONE)
+        
+        self.mainVBox.pack_start(scrollwin, True, True, 0)
+        
         self.show_all()
 
     def prepareInstrumentTable(self, category = 'all'):
+        """
+        Crea la Tabla de botones de Instrumentos.
+        """
         
         self.category = category
 
@@ -376,35 +392,22 @@ class InstrumentPanel(gtk.EventBox):
             self.instBox.remove(self.instTable)
             self.instTable.destroy()
 
-        instrumentNum = len(self.instrumentList[category])
-        instruments = self.instrumentList[category]
-
-        cols = self.rowLen
-
-        if instrumentNum < cols:
-            cols = instrumentNum
-            
-        rows = (instrumentNum // cols)
-        
-        if instrumentNum % cols is not 0:    #S'il y a un reste
-            rows = rows + 1
-
-        self.instTable = gtk.Table(rows, cols, True)
+        self.instTable = gtk.Table(rows=1, columns=6, homogeneous=True)
         self.instTable.set_row_spacings(0)
         self.instTable.set_col_spacings(0)
 
-        for row in range(rows):
-            for col in range(cols):
-                i = row * cols + col
-                if i >= instrumentNum:
-                    break
-                    
-                inst = instruments[i]
-                
-                if self.instDic.has_key(inst):
-                    self.instTable.attach(
-                        self.instDic[inst], col, col + 1,
-                        row, row + 1, gtk.SHRINK, gtk.SHRINK, 0, 0)
+        row = 0
+        col = 0
+        for instrument in self.instrumentList[category]:
+            inst = self.instDic[instrument]
+            self.instTable.attach(inst,
+                col, col+1, row, row+1)
+            
+            col += 1
+            
+            if col == 6:
+                col = 0
+                row += 1
 
         self.instBox.add(self.instTable)
         self.instTable.show_all()
@@ -417,7 +420,7 @@ class InstrumentPanel(gtk.EventBox):
             self.prepareInstrumentTable(category)
 
     def handleInstrumentButtonClick(self,widget,instrument):
-    
+
         if widget.get_active() is True and self.recstate == False:
             if self.setInstrument:
                 widget.event(gtk.gdk.Event(gtk.gdk.LEAVE_NOTIFY)) # fake the leave event
