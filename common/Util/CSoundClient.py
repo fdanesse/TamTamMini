@@ -259,10 +259,10 @@ class _CSoundClientPlugin:
     def loopGetNumTicks(self, loopId=_loop_default):
         return self.jamesSux[loopId]
 
-    def loopSetTickDuration(self,d, loopId=_loop_default):
+    def loopSetTickDuration(self, d, loopId=_loop_default):
         sc_loop_setTickDuration(loopId, d)
 
-    def loopDeactivate(self, note = 'all', loopId=_loop_default):
+    def loopDeactivate(self, note='all', loopId=_loop_default):
         if note == 'all':
             sc_loop_deactivate_all(loopId)
             
@@ -443,7 +443,7 @@ class _CSoundClientPlugin:
             pitch = 1
             
         else:
-            pitch = GenerationConstants.TRANSPOSE[ pitch - 24 ]
+            pitch = GenerationConstants.TRANSPOSE[pitch - 24]
 
         instrument_id_offset = 0
         

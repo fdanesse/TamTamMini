@@ -137,7 +137,7 @@ widget "*%s*" style "scale_style"
                 self.alloc.x + self.sliderX,
                 self.alloc.y + sliderY,
                 self.pixbufWidth, self.pixbufHeight,
-                gtk.gdk.RGB_DITHER_NORMAL, 0, 0 )
+                gtk.gdk.RGB_DITHER_NORMAL, 0, 0)
 
         return True
 

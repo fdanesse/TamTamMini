@@ -1,6 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Corregido:
+#   12/11/2013 Flavio Danesse
+#   fdanesse@gmail.com - fdanesse@activitycentral.com
+
 import random
-import time
-import math
 
 #----------------------------------------------------------------------
 # TODO: replace magic numbers with constants
@@ -44,12 +49,14 @@ def scale(val, mini=0., maxi=1., length=100):
 
     up = 1.-val 
     if up <= 0.5:
-        low_val = (pow(1.-(up*2.),4.)*(-50.5)+0.5)
+        low_val = (pow(1. - (up * 2.), 4.) * (-50.5) + 0.5)
+
     else:
         low_val = up
 
     if val <= 0.5:
-        high_val = (pow(1.-(val * 2.),4.)*(-50.5)+0.5)
+        high_val = (pow(1.-(val * 2.), 4.) * (-50.5) + 0.5)
+
     else:
         high_val = val
 
@@ -57,12 +64,16 @@ def scale(val, mini=0., maxi=1., length=100):
 
     calc = (1. / length) * (high_val - low_val)
     append = slope.append
+
     for i in range(length + 1):
         temp = i * calc + low_val
+
         if temp < 0:
             temp = 0
+
         elif temp > 1:
             temp = 1
+
         else:
             temp = temp	
 

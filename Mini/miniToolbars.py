@@ -197,6 +197,7 @@ class recordToolbar(gtk.Toolbar):
         self.insert(self.loopSetButton, -1)
         self.loopSetButton.show()
 
+
 class LoopSettingsPalette(Palette):
     
     def __init__(self, label, mini):

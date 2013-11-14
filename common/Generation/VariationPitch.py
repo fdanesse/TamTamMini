@@ -1,53 +1,75 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Corregido:
+#   12/11/2013 Flavio Danesse
+#   fdanesse@gmail.com - fdanesse@activitycentral.com
+
 import random
 
-class PitchReverse:
-    def __init__( self ):
+class PitchReverse():
+
+    def __init__(self):
         self.pitchList = []
 
-    def reorderPitch( self, notesList ):
+    def reorderPitch(self, notesList):
+
         self.extractOneValue(notesList)
         self.pitchList.reverse()
+
         for i in range(len(notesList)):
             notesList[i].pitch = self.pitchList[i]
 
         return notesList
 
-    def extractOneValue( self, notesList ):
+    def extractOneValue(self, notesList):
+
         self.pitchList = []
         for note in notesList:
             self.pitchList.append(note.pitch)
 
-class PitchSort( PitchReverse ):
-    def __init__( self ):
-        PitchReverse.__init__( self )
+class PitchSort(PitchReverse):
 
-    def reorderPitch( self, notesList ):
+    def __init__(self):
+
+        PitchReverse.__init__(self)
+
+    def reorderPitch(self, notesList):
+
         PitchReverse.extractOneValue(self, notesList)
         self.pitchList.sort()
+
         for i in range(len(notesList)):
             notesList[i].pitch = self.pitchList[i]
 
         return notesList
 
-class PitchShuffle( PitchReverse ):
-    def __init__( self ):
-        PitchReverse.__init__ ( self )
+class PitchShuffle(PitchReverse):
 
-    def reorderPitch( self, notesList ):
+    def __init__(self):
+
+        PitchReverse.__init__ (self)
+
+    def reorderPitch(self, notesList):
+
         PitchReverse.extractOneValue(self, notesList)
         self.pitchList = random.sample(self.pitchList, len(self.pitchList))
+
         for i in range(len(notesList)):
             notesList[i].pitch = self.pitchList[i]
 
         return notesList
 
-class PitchMarkov:
-    def __init__( self ):
+class PitchMarkov():
+
+    def __init__(self):
+
         self.originalList = []
 
-    def getNewList( self, notesList, order=1 ):
+    def getNewList(self, notesList, order=1):
+
         self.playedNotes = []
-        self.extractOneValue( notesList, order )
+        self.extractOneValue(notesList, order)
         self.playedNotes = self.originalList[:order]
         
         for i in range(len(self.originalList) - order):
@@ -58,21 +80,26 @@ class PitchMarkov:
 
         return notesList
 
-    def extractOneValue( self, notesList, order ):
+    def extractOneValue(self, notesList, order):
+
         self.originalList = []
         for note in notesList:
             self.originalList.append(note.pitch)
+
         for i in range(order):
             self.originalList.append(self.originalList[i])
 
-    def pickupNewValue( self, order ):
+    def pickupNewValue(self, order):
+
         condition = False
         self.probTable = []
+
         for ilist in range(len(self.originalList) - order):         
             for iord in range(order):
                 if self.playedNotes[len(self.playedNotes) - (iord + 1)] != self.originalList[(order - 1) + ilist - iord]:
                     condition = False
                     break
+
                 else:
                     condition = True
 

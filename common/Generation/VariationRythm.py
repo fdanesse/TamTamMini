@@ -1,11 +1,18 @@
-import random
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+# Corregido:
+#   12/11/2013 Flavio Danesse
+#   fdanesse@gmail.com - fdanesse@activitycentral.com
+
+import random
 import common.Config as Config
 
 # remplacer position dans notesList par l'attribut de CSoundNote
-class RythmShuffle:
+class RythmShuffle():
 
-    def getNewList( self, notesList, nbeats ):
+    def getNewList(self, notesList, nbeats):
+
         self.barLength = Config.TICKS_PER_BEAT * nbeats
         self.onsetDelta = 0
         self.newOnsetList = []
@@ -13,7 +20,10 @@ class RythmShuffle:
         self.newDuration = []
         self.extractOnsetValue(notesList)
 
-        self.newOnsetList = random.sample(range(len(self.originalList)), len(self.originalList))
+        self.newOnsetList = random.sample(
+            range(len(self.originalList)),
+            len(self.originalList))
+
         self.getOldDuration(notesList)
         self.getNewDuration(notesList)
 
@@ -24,7 +34,7 @@ class RythmShuffle:
 
         return notesList
     
-    def extractOnsetValue( self, notesList ):
+    def extractOnsetValue(self, notesList):
         self.originalList = []
         for note in notesList:
             self.originalList.append(note.onset)
@@ -32,39 +42,49 @@ class RythmShuffle:
         for i in range(len(self.originalList) -1):
             self.originalList[i] = self.originalList[i+1] - self.originalList[i]
 
-        self.originalList[-1] = self.barLength - (self.originalList[-1] % self.barLength)
+        self.originalList[-1] = self.barLength - (
+            self.originalList[-1] % self.barLength)
 
-    def getOldDuration( self, notesList ):
+    def getOldDuration(self, notesList):
+
         for i in range(len(notesList)):
             if (i+1) == len(notesList):
-                self.oldDuration.append(notesList[i].duration / (self.barLength - (notesList[i].onset % self.barLength)))
-            else:
-                self.oldDuration.append(notesList[i].duration / (notesList[i+1].onset - notesList[i].onset))
+                self.oldDuration.append(notesList[i].duration / (
+                self.barLength - (notesList[i].onset % self.barLength)))
 
-    def getNewDuration( self, notesList ):
+            else:
+                self.oldDuration.append(notesList[i].duration / (
+                notesList[i + 1].onset - notesList[i].onset))
+
+    def getNewDuration(self, notesList):
+
         for i in self.newOnsetList:
             if (i+1) == len(notesList):
-                self.newDuration.append(self.barLength - (notesList[i].onset % self.barLength))
+                self.newDuration.append(self.barLength - (
+                    notesList[i].onset % self.barLength))
+
             else:
-                self.newDuration.append(notesList[i+1].onset - notesList[i].onset)
+                self.newDuration.append(
+                    notesList[i + 1].onset - notesList[i].onset)
 
-class RythmReverse( RythmShuffle ):
+class RythmReverse(RythmShuffle):
 
-    def getNewList( self, notesList, nbeats ):
+    def getNewList(self, notesList, nbeats):
+
         self.barLength = Config.TICKS_PER_BEAT * nbeats
         self.onsetDelta = 0
         self.newOnsetList = []
         self.oldDuration = []
         self.newDuration = []
-        RythmShuffle.extractOnsetValue( self, notesList )
+        RythmShuffle.extractOnsetValue(self, notesList)
 
-        for i in range( len( self.originalList ) ):
-            self.newOnsetList.append( i )
+        for i in range(len(self.originalList)):
+            self.newOnsetList.append(i)
 
         self.newOnsetList.reverse() 
 
-        RythmShuffle.getOldDuration( self, notesList )
-        RythmShuffle.getNewDuration( self, notesList )
+        RythmShuffle.getOldDuration(self, notesList)
+        RythmShuffle.getNewDuration(self, notesList)
 
         for i in range(len(notesList)):
             notesList[i].onset = self.onsetDelta

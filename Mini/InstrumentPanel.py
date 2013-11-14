@@ -21,7 +21,7 @@ Tooltips = Config.Tooltips
 
 class InstrumentPanel(gtk.EventBox):
     
-    def __init__(self,setInstrument=None):
+    def __init__(self, setInstrument=None):
     
         gtk.EventBox.__init__(self)
 
@@ -39,7 +39,7 @@ class InstrumentPanel(gtk.EventBox):
 
         self.loaded = False
         self.loadData = {}
-        self.loadStage = [0,0,0]
+        self.loadStage = [0, 0, 0]
 
     def grab_focus(self):
     
@@ -74,7 +74,7 @@ class InstrumentPanel(gtk.EventBox):
         if self.loaded:
             self.prepareInstrumentTable(self.category)
         
-    def load(self, timeout = -1):
+    def load(self, timeout=-1):
         
         if self.loaded:
             return True
@@ -163,13 +163,13 @@ class InstrumentPanel(gtk.EventBox):
         self.loaded = True
         return True
 
-    def loadInstrumentList(self, timeout = -1, loadStage = [0,0,0]):
+    def loadInstrumentList(self, timeout=-1, loadStage=[0, 0, 0]):
 
         if loadStage[1] == 0:
             self.instrumentList = {
                 "all": [], "all.enterMode": [],
                 "percussions.enterMode": [],
-                "mysounds": [] }
+                "mysounds": []}
                 
             for category in Config.CATEGORIES:
                 self.instrumentList[category] = []
@@ -212,7 +212,7 @@ class InstrumentPanel(gtk.EventBox):
         loadStage[1] = 0
         return True
 
-    def loadToolbar(self, timeout = -1, loadStage = [0,0,0]):
+    def loadToolbar(self, timeout=-1, loadStage=[0, 0, 0]):
         """
         Descripcion:
             self.toolbarBox: Toolbar Para Seleccionar la Categoría de Instrumentos.
@@ -255,9 +255,9 @@ class InstrumentPanel(gtk.EventBox):
                 self.firstTbBtn = self.loadData["btn"]
                 
             self.loadData["btn"].connect(
-                'clicked', self.handleToolbarBtnPress,category)
+                'clicked', self.handleToolbarBtnPress, category)
                 
-            self.tooltips.set_tip(self.loadData["btn"],str(category))
+            self.tooltips.set_tip(self.loadData["btn"], str(category))
             self.loadData["btnBox"].add(self.loadData["btn"])
             
             self.toolbarBox.pack_start(
@@ -273,7 +273,7 @@ class InstrumentPanel(gtk.EventBox):
         loadStage[1] = 0
         return True
 
-    def loadInstDic(self, instDic, timeout = -1, loadStage = [0,0,0]):
+    def loadInstDic(self, instDic, timeout=-1, loadStage=[0, 0, 0]):
 
         if loadStage[1] == 0:
             self.firstInstButton = None
@@ -281,7 +281,6 @@ class InstrumentPanel(gtk.EventBox):
             loadStage[1] = 1
             if timeout >= 0 and time.time() > timeout:
                 return False
-
 
         for i in range(loadStage[1]-1, self.loadData["len"]):
             instrument = self.instrumentList["all"][i]
@@ -309,9 +308,11 @@ class InstrumentPanel(gtk.EventBox):
 
             if loadStage[2] == 2:
                 self.loadData["instButton"].clickedHandler = self.loadData["instButton"].connect(
-                    'clicked',self.handleInstrumentButtonClick, instrument)
+                    'clicked', self.handleInstrumentButtonClick, instrument)
+
                 self.loadData["instButton"].connect(
-                    'enter',self.handleInstrumentButtonEnter, instrument)
+                    'enter', self.handleInstrumentButtonEnter, instrument)
+
                 self.loadData["instButton"].connect(
                     'focus-in-event', self.handleInstrumentButtonFocus, instrument)
                     
@@ -324,6 +325,7 @@ class InstrumentPanel(gtk.EventBox):
 
             self.loadData["instBox"].pack_start(
                 self.loadData["instButton"], False, False)
+
             instDic[instrument] = self.loadData["instBox"]
             
             if self.firstInstButton == None:
@@ -371,7 +373,7 @@ class InstrumentPanel(gtk.EventBox):
         
         self.show_all()
 
-    def prepareInstrumentTable(self, category = 'all'):
+    def prepareInstrumentTable(self, category='all'):
         """
         Crea la Tabla de botones de Instrumentos.
         """
@@ -401,7 +403,7 @@ class InstrumentPanel(gtk.EventBox):
         for instrument in self.instrumentList[category]:
             inst = self.instDic[instrument]
             self.instTable.attach(inst,
-                col, col+1, row, row+1)
+                col, col + 1, row, row + 1)
             
             col += 1
             
@@ -419,7 +421,7 @@ class InstrumentPanel(gtk.EventBox):
         if widget.get_active():
             self.prepareInstrumentTable(category)
 
-    def handleInstrumentButtonClick(self,widget,instrument):
+    def handleInstrumentButtonClick(self, widget, instrument):
 
         if widget.get_active() is True and self.recstate == False:
             if self.setInstrument:
@@ -434,7 +436,7 @@ class InstrumentPanel(gtk.EventBox):
             if self.enterMode:
                 pass #Close the window
 
-    def handleInstrumentButtonEnter(self,widget,instrument):
+    def handleInstrumentButtonEnter(self, widget, instrument):
         if self.enterMode and self.playInstrument:
             self.playInstrument(instrument)
 
@@ -467,18 +469,19 @@ class InstrumentPanel(gtk.EventBox):
             if shift > top_height:
                 top.props.vadjustment.props.value += (shift - top_height)
 
-    def handleMicRecButtonClick(self,widget,mic):
+    def handleMicRecButtonClick(self, widget, mic):
         self.recstate = False
         self.setInstrument(mic)
         
         if self.micRec:
             self.micRec(mic)
 
-    def handleRecButtonPress(self,widget,btn):
+    def handleRecButtonPress(self, widget, btn):
         self.recstate = True
         btn.set_active(True)
 
-    def set_activeInstrument(self,instrument, state):
+    def set_activeInstrument(self, instrument, state):
+
         if len(self.instDic) > 0:
             for key in self.instDic:
                 if key == instrument:
@@ -489,9 +492,10 @@ class InstrumentPanel(gtk.EventBox):
 
 class DrumPanel(gtk.EventBox):
     
-    def __init__(self, setDrum = None):
+    def __init__(self, setDrum=None):
         
         gtk.EventBox.__init__(self)
+
         color = gtk.gdk.color_parse(Config.PANEL_BCK_COLOR)
         self.modify_bg(gtk.STATE_NORMAL, color)
 
@@ -524,7 +528,7 @@ class DrumPanel(gtk.EventBox):
                 firstBtn, drumkit + '.png')
                 
             self.drums[drumkit].clickedHandler = self.drums[drumkit].connect(
-                'clicked', self.setDrums,drumkit)
+                'clicked', self.setDrums, drumkit)
             
             if firstBtn == None:
                 firstBtn = self.drums[drumkit]

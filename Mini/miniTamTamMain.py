@@ -24,6 +24,8 @@ from common.Util import NoteDB
 from common.Util.NoteDB import Note
 from common.Util.CSoundClient import new_csound_client
 from common.Util import InstrumentDB
+
+# Necesario porque crea los instrumentos.
 from common.Util.Instruments import DRUMCOUNT
 from common.Util import OS
 from common.Util.NoteDB import PARAMETER
@@ -35,8 +37,6 @@ from KeyboardStandAlone import KeyboardStandAlone
 from MiniSequencer import MiniSequencer
 from Loop import Loop
 from RythmGenerator import generator # Descripcion ?
-
-#import sugar.graphics.style as style
 
 from Mini.InstrumentPanel import InstrumentPanel
 from Mini.miniToolbars import playToolbar
@@ -504,7 +504,6 @@ class miniTamTamMain(gtk.EventBox):
 
     def recordOverSensitivity(self, state):
         pass
-        #self._recordToolbar.keyboardRecOverButton.set_sensitive( state )
 
     def loadMicInstrument(self, data):
         self.csnd.load_mic_instrument(data)
@@ -715,7 +714,6 @@ class miniTamTamMain(gtk.EventBox):
             self.drumFillin.play()
             #self.csnd.loopSetTick(0)
             nextInTicks = self.nextHeartbeatInTicks()
-            #print "play:: next beat in %f ticks. bpb == %d. setting ticks to %d" % (nextInTicks, self.beat, Config.TICKS_PER_BEAT*self.beat - int(round(nextInTicks)))
             self.csnd.loopSetTick(
                 Config.TICKS_PER_BEAT * self.beat - int(round(nextInTicks)))
             self.csnd.loopStart()
@@ -1051,7 +1049,6 @@ class miniTamTamMain(gtk.EventBox):
         elif correct < 0:
             correct += ticksPerLoop
             
-        #print "correct:: %f ticks, %f ticks in, %f expected, %f err, correct %f" % (curTick, curTicksIn, ticksIn, err, correct)
         if abs(err) > 0.25:
             self.csnd.adjustTick(-err)
 
