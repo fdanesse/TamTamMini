@@ -30,7 +30,7 @@ locale.setlocale(locale.LC_NUMERIC, 'C')
 import os
 from gi.repository import Gtk
 
-#from common.Util.CSoundClient import new_csound_client
+from common.Util.CSoundClient import new_csound_client
 
 #from Mini.miniTamTamMain import miniTamTamMain
 
@@ -84,7 +84,7 @@ class TamTamMini(activity.Activity):
             self.mini.updateInstrumentPanel()
 
     def onActive(self, widget=None, event=None):
-        '''
+
         if widget.props.active == False:
             csnd = new_csound_client()
             csnd.connect(False)
@@ -92,17 +92,15 @@ class TamTamMini(activity.Activity):
         else:
             csnd = new_csound_client()
             csnd.connect(True)
-        '''
-        pass
 
     def onDestroy(self, arg2):
         '''
         self.mini.onDestroy()
-
+        '''
         csnd = new_csound_client()
         csnd.connect(False)
         csnd.destroy()
-        '''
+
         Gtk.main_quit()
 
     # no more dir created by TamTam

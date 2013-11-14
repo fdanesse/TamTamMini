@@ -10,6 +10,7 @@ import logging
 from os.path import join
 
 from gi.repository import Gtk
+from gi.repository import Gdk
 
 from sugar3.activity.activity import get_bundle_path
 from sugar3.activity.activity import get_activity_root
@@ -65,18 +66,9 @@ PLUGIN_RATE = 16000
 PLUGIN_PERIOD = 1024
 PLUGIN_NPERIODS = 2
 
-try:
-    from sugar3.graphics.toolbarbox import ToolbarBox
-    from sugar3.graphics.toolbarbox import ToolbarButton
-    HAVE_TOOLBOX = True
-
-except ImportError:
-    HAVE_TOOLBOX = False
-
 ##############
 ## SOUNDS
 ##############
-
 ARECORD = "arecord " + os.getenv(
     "TAMTAM_ARECORD",
     "-f S16_LE -t wav -r 16000 -c2 -D hw:0,0")
@@ -114,8 +106,9 @@ CSOUND_STOP_RECORD_PERF = 'i5401 4 1 "%s"'
 #################
 ## GUI CONSTANTS
 #################
+screen = Gdk.Screen.get_default()
 
-if max(gtk.gdk.screen_width(), gtk.gdk.screen_height()) <= 800:
+if max(screen.get_width(), screen.get_height()) <= 800:
     # Images created using `convert $i -resize 73%` command
     IMAGE_ROOT_SCALED = join(IMAGE_ROOT, '73', '')
     scale = lambda x: int(x * .73)
