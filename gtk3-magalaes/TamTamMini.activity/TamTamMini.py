@@ -32,7 +32,7 @@ from gi.repository import Gtk
 
 from common.Util.CSoundClient import new_csound_client
 
-#from Mini.miniTamTamMain import miniTamTamMain
+from Mini.miniTamTamMain import miniTamTamMain
 
 from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
@@ -52,8 +52,8 @@ class TamTamMini(activity.Activity):
 
         self.set_title('TamTam Mini')
 
-        #self.connect('notify::active', self.onActive)
-        #self.connect('destroy', self.onDestroy)
+        self.connect('notify::active', self.onActive)
+        self.connect('destroy', self.onDestroy)
 
         toolbox = ToolbarBox()
         separador = Gtk.SeparatorToolItem()
@@ -68,11 +68,11 @@ class TamTamMini(activity.Activity):
 
         self.set_toolbar_box(toolbox)
   
-        #self.mini = miniTamTamMain(self)
-        #self.mini.onActivate(arg=None)
-        #self.mini.updateInstrumentPanel()
+        self.mini = miniTamTamMain(self)
+        self.mini.onActivate(arg=None)
+        self.mini.updateInstrumentPanel()
 
-        #self.set_canvas(self.mini)
+        self.set_canvas(self.mini)
 
         self.show_all()
 
@@ -94,9 +94,9 @@ class TamTamMini(activity.Activity):
             csnd.connect(True)
 
     def onDestroy(self, arg2):
-        '''
+        
         self.mini.onDestroy()
-        '''
+        
         csnd = new_csound_client()
         csnd.connect(False)
         csnd.destroy()

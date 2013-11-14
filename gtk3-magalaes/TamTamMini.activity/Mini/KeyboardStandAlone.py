@@ -5,8 +5,6 @@
 #   12/11/2013 Flavio Danesse
 #   fdanesse@gmail.com - fdanesse@activitycentral.com
 
-import gtk
-
 import common.Config as Config
 
 from common.Generation.GenerationConstants import GenerationConstants
@@ -118,8 +116,9 @@ class KeyboardStandAlone():
                 playkey(36, 100, self.instrumentDB.instNamed[instrumentName].kit[pitch])
 
             else:
-                if event.state == gtk.gdk.MOD1_MASK:
-                    pitch += 5
+                # FIXME: falta portar gtk.gdk.MOD1_MASK
+                #if event.state == gtk.gdk.MOD1_MASK:
+                #    pitch += 5
 
                 instrument = self.instrumentDB.instNamed[instrumentName]
 

@@ -5,7 +5,7 @@
 #   12/11/2013 Flavio Danesse
 #   fdanesse@gmail.com - fdanesse@activitycentral.com
 
-import gobject
+from gi.repository import GObject
 
 import common.Config as Config
 
@@ -38,7 +38,7 @@ class MiniSequencer():
 
     def setTempo(self, tempo):
         self.tempo = tempo
-        gobject.source_remove(self.playBackTimeout)
+        GObject.source_remove(self.playBackTimeout)
         self.playState = 0
 
     def handleRecordButton(self, widget, data=None):
@@ -73,14 +73,14 @@ class MiniSequencer():
 
     def startPlayback(self):
         if not self.playState:
-            self.playbackTimeout = gobject.timeout_add(
+            self.playbackTimeout = GObject.timeout_add(
                 int(60000/self.tempo/12), self.handleClock)
             self.handleClock()
             self.playState = 1
 
     def stopPlayback(self):
         if self.playbackTimeout != None:
-            gobject.source_remove(self.playbackTimeout)
+            GObject.source_remove(self.playbackTimeout)
             self.playbackTimeout = None
             self.playState = 0
 

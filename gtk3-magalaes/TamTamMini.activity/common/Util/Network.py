@@ -24,8 +24,8 @@ import xdrlib
 import random
 
 import time
-import gtk
-import gobject
+from gi.repository import Gdk
+from gi.repository import GObject
 import common.Config as Config
 
 PORT = 24460
@@ -112,13 +112,13 @@ class Listener(threading.Thread):
                     else:
                         break # exit thread
 
-                gtk.gdk.threads_enter()
+                Gdk.threads_enter()
                 self.owner._processSockets(inputReady)
-                gtk.gdk.threads_leave()
+                Gdk.threads_leave()
 
             except socket.error, (value, message):
                 print "Listener:: socket error: " + message
-                gtk.gdk.threads_leave()
+                Gdk.threads_leave()
                 break
 
 
@@ -375,7 +375,7 @@ class Network():
             return
 
         if poke.connect_ex((ip, WAIT_PORT)): # failed to connect
-            gobject.timeout_add(500, self._pokePeer, poke, ip, 0)
+            GObject.timeout_add(500, self._pokePeer, poke, ip, 0)
 
         else: # connected
             if Config.DEBUG > 1:
@@ -390,7 +390,7 @@ class Network():
                 print "Network::introducePeer:: peer failed to respond after 60 seconds, giving up!"
 
             else:
-                gobject.timeout_add(500, self._pokePeer,
+                GObject.timeout_add(500, self._pokePeer,
                     poke, ip, retry + 1)
 
         else: # connected
@@ -675,7 +675,7 @@ class Network():
                 con.waitingForData = 0
 
                 for func in self.processMessage[con.message]:
-                    gobject.idle_add(func, sock, con.message, data)
+                    GObject.idle_add(func, sock, con.message, data)
 
             else:
                 return # wait for more data
@@ -686,7 +686,7 @@ class Network():
                 con.recvBuf = con.recvBuf[1:]
 
                 for func in self.processMessage[con.message]:
-                    gobject.idle_add(func, sock, con.message, "")
+                    GObject.idle_add(func, sock, con.message, "")
 
             else:
                 con.waitingForData = MSG_SIZE[con.message]
