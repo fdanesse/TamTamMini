@@ -28,15 +28,16 @@
 import locale
 locale.setlocale(locale.LC_NUMERIC, 'C')
 import os
-import gtk
+from gi.repository import Gtk
 
-import common.Config as Config
+#from common.Util.CSoundClient import new_csound_client
 
-from common.Util.CSoundClient import new_csound_client
+#from Mini.miniTamTamMain import miniTamTamMain
 
-from Mini.miniTamTamMain import miniTamTamMain
-
-from sugar.activity import activity
+from sugar3.activity import activity
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import ActivityToolbarButton
+from sugar3.activity.widgets import StopButton
 
 
 class TamTamMini(activity.Activity):
@@ -49,55 +50,31 @@ class TamTamMini(activity.Activity):
 
         activity.Activity.__init__(self, handle)
 
-        color = gtk.gdk.color_parse(Config.WS_BCK_COLOR)
-        self.modify_bg(gtk.STATE_NORMAL, color)
-
         self.set_title('TamTam Mini')
 
-        self.connect('notify::active', self.onActive)
-        self.connect('destroy', self.onDestroy)
+        #self.connect('notify::active', self.onActive)
+        #self.connect('destroy', self.onDestroy)
 
-        if Config.HAVE_TOOLBOX:
-            from sugar.graphics.toolbarbox import ToolbarBox
-            from sugar.activity import widgets
-            self.toolbox = ToolbarBox()
-            self.toolbox.toolbar.insert(widgets.ActivityButton(self), -1)
-            self.toolbox.toolbar.insert(widgets.TitleEntry(self), -1)
+        toolbox = ToolbarBox()
+        separador = Gtk.SeparatorToolItem()
+        separador.props.draw = False
+        separador.set_expand(True)
+        stop_button = StopButton(self)
+        stop_button.props.accelerator = '<Ctrl>q'
 
-            try:
-                from sugar.activity.widgets import DescriptionItem
+        toolbox.toolbar.insert(ActivityToolbarButton(self), -1)
+        toolbox.toolbar.insert(separador, -1)
+        toolbox.toolbar.insert(stop_button, -1)
 
-            except ImportError:
-                pass
+        self.set_toolbar_box(toolbox)
+  
+        #self.mini = miniTamTamMain(self)
+        #self.mini.onActivate(arg=None)
+        #self.mini.updateInstrumentPanel()
 
-            else:
-                description_item = DescriptionItem(self)
-                self.toolbox.toolbar.insert(description_item, -1)
-                description_item.show()
+        #self.set_canvas(self.mini)
 
-            self.toolbox.toolbar.insert(widgets.ShareButton(self), -1)
-
-        else:
-            self.toolbox = activity.ActivityToolbox(self)
-            self.set_toolbox(self.toolbox)
-
-        self.toolbox.show()
-
-        self.mini = miniTamTamMain(self)
-        self.mini.onActivate(arg=None)
-        self.mini.updateInstrumentPanel()
-
-        self.set_canvas(self.mini)
-
-        if Config.HAVE_TOOLBOX:
-            separator = gtk.SeparatorToolItem()
-            separator.props.draw = False
-            separator.set_expand(True)
-            self.toolbox.toolbar.insert(separator, -1)
-            self.toolbox.toolbar.insert(widgets.StopButton(self), -1)
-            self.toolbox.toolbar.show_all()
-
-        self.show()
+        self.show_all()
 
     def do_size_allocate(self, allocation):
 
@@ -107,7 +84,7 @@ class TamTamMini(activity.Activity):
             self.mini.updateInstrumentPanel()
 
     def onActive(self, widget=None, event=None):
-
+        '''
         if widget.props.active == False:
             csnd = new_csound_client()
             csnd.connect(False)
@@ -115,18 +92,18 @@ class TamTamMini(activity.Activity):
         else:
             csnd = new_csound_client()
             csnd.connect(True)
+        '''
+        pass
 
     def onDestroy(self, arg2):
-        if Config.DEBUG:
-            print 'DEBUG: TamTam::onDestroy()'
-
+        '''
         self.mini.onDestroy()
 
         csnd = new_csound_client()
         csnd.connect(False)
         csnd.destroy()
-
-        gtk.main_quit()
+        '''
+        Gtk.main_quit()
 
     # no more dir created by TamTam
     def ensure_dir(self, dir, perms=0777, rw=os.R_OK | os.W_OK):

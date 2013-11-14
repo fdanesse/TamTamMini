@@ -9,10 +9,10 @@ import os
 import logging
 from os.path import join
 
-import gtk
+from gi.repository import Gtk
 
-from sugar.activity.activity import get_bundle_path
-from sugar.activity.activity import get_activity_root
+from sugar3.activity.activity import get_bundle_path
+from sugar3.activity.activity import get_activity_root
 
 FEATURES_OGG = True
 FEATURES_MIC = None
@@ -66,8 +66,8 @@ PLUGIN_PERIOD = 1024
 PLUGIN_NPERIODS = 2
 
 try:
-    from sugar.graphics.toolbarbox import ToolbarBox
-    from sugar.graphics.toolbarbox import ToolbarButton
+    from sugar3.graphics.toolbarbox import ToolbarBox
+    from sugar3.graphics.toolbarbox import ToolbarButton
     HAVE_TOOLBOX = True
 
 except ImportError:
