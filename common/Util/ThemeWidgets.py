@@ -13,7 +13,7 @@ from sugar.graphics.combobox import ComboBox
 
 
 class ImageVScale(gtk.VScale):
-    
+
     def __init__(self, image_name,
         adjustment=None, slider_border=0,
         insensitive_name=None, trough_color="#3D403A",
@@ -25,7 +25,7 @@ class ImageVScale(gtk.VScale):
 
         if snap:
             self.snap = 1 / snap
-            
+
         else:
             self.snap = False
 
@@ -116,12 +116,12 @@ widget "*%s*" style "scale_style"
         if self.get_inverted():
             sliderY = int((
                 self.alloc.height - self.pixbufHeight) * (
-                adj.upper-val) / (adj.upper - adj.lower))
+                adj.upper - val) / (adj.upper - adj.lower))
                 
         else:
             sliderY = int((
                 self.alloc.height - self.pixbufHeight) * (
-                val-adj.lower) / (adj.upper - adj.lower))
+                val - adj.lower) / (adj.upper - adj.lower))
 
         if self.insensitivePixbuf != None and \
             self.state == gtk.STATE_INSENSITIVE:
@@ -146,6 +146,7 @@ widget "*%s*" style "scale_style"
         if self.snap:
             self.set_value(round(
                 self.snap * self.get_value()) / self.snap)
+
 
 class ImageButton(gtk.Button):
     
@@ -270,7 +271,7 @@ class BigComboBox(ComboBox):
                 else:
                     width, height = size
                     
-                if icon_name[0:6] == "theme:": 
+                if icon_name[0:6] == "theme:":
                     icon_name = self._get_real_name_from_theme(
                         icon_name[6:], size)
                     

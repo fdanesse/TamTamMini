@@ -11,25 +11,26 @@
 
 import random
 
+
 class Drunk():
 
     def __init__(self, minValue, maxValue, trackLength=None):
-    
+
         self.minValue = min(minValue, maxValue)
         self.maxValue = max(minValue, maxValue)
         self.lastValue = random.randint(self.minValue, self.maxValue)
 
     def getNextValue(self, maxStepSize, maxValue):
-        
+
         if self.lastValue < 0 or self.lastValue > maxValue:
             return random.randint(self.minValue, maxValue)
 
         direction = self.getDirection(maxValue)
         stepSize = self.getStepSize(direction, abs(maxStepSize), maxValue)
-        
+
         if maxStepSize < 0:
             minStepSize = 1
-            
+
         else:
             minStepSize = 0
   
@@ -71,8 +72,9 @@ class DroneAndJump(Drunk):
         Drunk.__init__(self, minValue, maxValue, trackLength=None)
         
         self.minValue = min(minValue, maxValue)
-        self.maxValue = max(minValue, maxValue)        
-        self.beforeLastValue = random.randint(self.minValue, self.maxValue) #self.minValue
+        self.maxValue = max(minValue, maxValue)
+        self.beforeLastValue = random.randint(
+            self.minValue, self.maxValue)  #self.minValue
         self.lastValue = self.beforeLastValue + 1
 
     def getNextValue(self, maxStepSize, maxValue):
@@ -113,7 +115,7 @@ class Repeter(Drunk):
             return Drunk.getStepSize(self, direction, maxStepSize, maxValue)
             
         else:
-            return Drunk.getStepSize(self, direction, 0, maxValue)    
+            return Drunk.getStepSize(self, direction, 0, maxValue)
 
 class Loopseg(Drunk):
 
@@ -125,17 +127,20 @@ class Loopseg(Drunk):
         self.recordState = 2
         self.recordPlayback = 0
         self.loopPlayback = 1
-        self.recordLength = random.randint(3, 6) 
+        self.recordLength = random.randint(3, 6)
         self.recordLoopTime = random.randint(1, 4)
 
     def getNextValue(self, maxStepSize, maxValue):
     
         if self.recordState == 2:
-            self.lastValue = Drunk.getNextValue(self, maxStepSize, maxValue)
+            self.lastValue = Drunk.getNextValue(
+                self, maxStepSize, maxValue)
             self.recordState = random.choice([2, 2, 2, 1])
 
-        if len(self.recordedValues) != self.recordLength and self.recordState == 1:
-            self.lastValue = Drunk.getNextValue(self, maxStepSize, maxValue)
+        if len(self.recordedValues) != self.recordLength and \
+            self.recordState == 1:
+            self.lastValue = Drunk.getNextValue(
+                self, maxStepSize, maxValue)
             self.recordedValues.append(self.lastValue)
             
         elif self.recordState == 1 or self.recordState == 0:
@@ -155,12 +160,13 @@ class Loopseg(Drunk):
                     self.recordState = 2
                     self.recordPlayback = 0
                     self.loopPlayback = 1
-                    self.recordLength = random.randint(3, 6) 
+                    self.recordLength = random.randint(3, 6)
                     self.recordLoopTime = random.randint(1, 4)
-                    self.lastValue = Drunk.getNextValue(self, maxStepSize, maxValue)
+                    self.lastValue = Drunk.getNextValue(
+                        self, maxStepSize, maxValue)
                     self.recordedValues = [self.lastValue]
                     
-        return self.lastValue  
+        return self.lastValue
 
     def loopAround(self):
         self.lastValue = self.recordedValues[self.recordPlayback]
@@ -186,10 +192,10 @@ class Line():
         scale = float(maxVal - minVal)
         
         if self.reverse:
-            self.inc = -scale/trackLength
+            self.inc = -scale / trackLength
             
         else:
-            self.inc = scale/trackLength  
+            self.inc = scale / trackLength
                 
     def getNextValue(self, rand, maxValue):
     
@@ -205,6 +211,6 @@ class Line():
         else:
             self.val = self.val
             
-        self.lastValue = self.val+self.inc
+        self.lastValue = self.val + self.inc
         
         return self.val

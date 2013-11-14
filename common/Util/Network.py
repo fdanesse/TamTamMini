@@ -65,7 +65,7 @@ MSG_SIZE = [0]
 i = 1
 
 for m in message_enum:
-    exec "%s = %d" % (m[0],i)
+    exec "%s = %d" % (m[0], i)
     MSG_NAME.append(m[0])
     MSG_SIZE.append(m[1])
     i += 1
@@ -121,6 +121,7 @@ class Listener(threading.Thread):
                 gtk.gdk.threads_leave()
                 break
 
+
 class Connection():
 
     def __init__(self, sock, address):
@@ -145,11 +146,11 @@ class Network():
             print l
             f.close()
             mode = MD_PEER
-            hostaddress = (l,PORT)
+            hostaddress = (l, PORT)
 
         # prepare message handlers
         self.processMessage = {}
-        for i in range(1,MAX_MSG_ID):
+        for i in range(1, MAX_MSG_ID):
             self.processMessage[i] = []
 
         self.statusWatcher = []
@@ -167,7 +168,7 @@ class Network():
                 socket.AF_INET, socket.SOCK_DGRAM)
             self.listenerSocket.bind(("localhost", LISTENER_PORT))
 
-        except socket.error, (value,message):
+        except socket.error, (value, message):
             print "Network:: FAILED to open listenerSocket: " + message
             mode = MD_OFFLINE
         
@@ -193,7 +194,7 @@ class Network():
             print "Network:: shutting down!"
         
         if self.listener:
-            self.listenerSocket.sendto("EXIT", ("localhost",LISTENER_PORT))
+            self.listenerSocket.sendto("EXIT", ("localhost", LISTENER_PORT))
             time.sleep(0.01) # get off the cpu so the listerer thread has a chance to clear.. IS THERE A BETTER WAY TO DO THIS?
             self.listener = None
 
@@ -215,7 +216,7 @@ class Network():
             self._clearSockets()
 
         elif self.listener: # make the listener wake so sockets can close properly
-            self.listenerSocket.sendto("CLEAR", ("localhost",LISTENER_PORT)) 
+            self.listenerSocket.sendto("CLEAR", ("localhost", LISTENER_PORT)) 
             time.sleep(0.01) # get off the cpu so the listerer thread has a chance to clear.. IS THERE A BETTER WAY TO DO THIS?
 
         self.hostAddress = None
@@ -228,8 +229,8 @@ class Network():
 
             try:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                address = ("",PORT)
-                self.connection[self.socket] = Connection( self.socket, address)
+                address = ("", PORT)
+                self.connection[self.socket] = Connection(self.socket, address)
                 self.socket.bind(address)
                 self.socket.listen(BACKLOG)
                 self.inputSockets.append(self.socket)
@@ -287,7 +288,7 @@ class Network():
                     self.socket.close()
                     self.connection.pop(self.socket)
 
-                print "Network:: FAILED to open socket: "  + message
+                print "Network:: FAILED to open socket: " + message
                 self.mode = MD_OFFLINE
                 self.hostAddress = None
 
@@ -297,12 +298,13 @@ class Network():
                     self.listener = None
 
         elif self.mode == MD_WAIT:
-            if Config.DEBUG > 1: print "Network:: initializing network, wait mode"
+            if Config.DEBUG > 1:
+                print "Network:: initializing network, wait mode"
 
             try:
                 self.socket = socket.socket(
                     socket.AF_INET, socket.SOCK_STREAM)
-                address = ("",WAIT_PORT)
+                address = ("", WAIT_PORT)
                 self.connection[self.socket] = Connection(
                     self.socket, address)
                 self.socket.bind(address)
@@ -376,7 +378,9 @@ class Network():
             gobject.timeout_add(500, self._pokePeer, poke, ip, 0)
 
         else: # connected
-            if Config.DEBUG > 1: print "Netwtork:: introduction succeeded"
+            if Config.DEBUG > 1:
+                print "Netwtork:: introduction succeeded"
+
             poke.close()
 
     def _pokePeer(self, poke, ip, retry):
@@ -520,7 +524,7 @@ class Network():
 
         if self.mode == MD_PEER:
             try:
-                self.socket.send( msg )
+                self.socket.send(msg)
                 #print "Network:: sent %d bytes" % (len(msg))
 
             except socket.error, (value, errmsg):
@@ -587,7 +591,7 @@ class Network():
         self.packer.reset()
         self.latencyQueryHandler[hash] = handler
         self.latencyQueryStart[hash] = time.time()
-        self.send(PR_LATENCY_QUERY,hash)
+        self.send(PR_LATENCY_QUERY, hash)
 
     #-----------------------------------------------------------------------
     # Message Handlers
