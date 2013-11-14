@@ -15,12 +15,12 @@ from gi.repository import Gdk
 from gi.repository import GObject
 
 from math import sqrt
-'''
+
 from common.Util.ThemeWidgets import ImageVScale # Descripcion: Slicer
 from common.Util.ThemeWidgets import ImageToggleButton # Descripcion: botón play
 from common.Util.ThemeWidgets import ImageButton # Descripcion: botón Dados
 from common.Util.ThemeWidgets import ImageRadioButton # Descripcion: botón de instrumento
-'''
+
 from common.Util.CSoundNote import CSoundNote
 from common.Util import NoteDB
 from common.Util.NoteDB import Note
@@ -104,7 +104,7 @@ class miniTamTamMain(Gtk.EventBox):
         self.csnd.setMasterVolume(self.volume)
         self.sequencer.beat = self.beat
         self.loop.beat = self.beat
-        self.tooltips = Gtk.Tooltip()
+        #self.tooltips = Gtk.Tooltip()
 
         self.mainWindowBox = Gtk.HBox() # Descripcion: Contenedor Principal
         
@@ -224,7 +224,7 @@ class miniTamTamMain(Gtk.EventBox):
             "button-release-event",
             self.handleGenerationSliderRelease)
             
-        self.tooltips.set_tip(self.geneSlider, Tooltips.COMPL)
+        #self.tooltips.set_tip(self.geneSlider, Tooltips.COMPL)
         
     def __make_beatSlider(self):
         """
@@ -253,7 +253,7 @@ class miniTamTamMain(Gtk.EventBox):
             "button-release-event",
             self.handleBeatSliderRelease)
             
-        self.tooltips.set_tip(self.beatSlider, Tooltips.BEAT)
+        #self.tooltips.set_tip(self.beatSlider, Tooltips.BEAT)
 
     def __make_tempoSlider(self):
         """
@@ -287,7 +287,7 @@ class miniTamTamMain(Gtk.EventBox):
         self.tempoSlider.connect("button-release-event",
             self.handleTempoSliderRelease)
         
-        self.tooltips.set_tip(self.tempoSlider, Tooltips.TEMPO)
+        #self.tooltips.set_tip(self.tempoSlider, Tooltips.TEMPO)
         
     def __make_volumeSlider(self):
         """
@@ -310,10 +310,8 @@ class miniTamTamMain(Gtk.EventBox):
         self.volumeSlider.set_inverted(True)
         self.volumeAdjustment.connect(
             "value_changed", self.handleVolumeSlider)
-            
-        #volumeSlider.connect("button-release-event", self.handleVolumeSliderRelease)
         
-        self.tooltips.set_tip(self.volumeSlider, Tooltips.VOL)
+        #self.tooltips.set_tip(self.volumeSlider, Tooltips.VOL)
         
     def drawGeneration(self):
         """
@@ -364,13 +362,13 @@ class miniTamTamMain(Gtk.EventBox):
             self.handleGenerateBtn)
         
         geneSliderBox.attach(self.generateBtn, 2, 4, 4, 6)
-        self.tooltips.set_tip(self.generateBtn, Tooltips.GEN)
+        #self.tooltips.set_tip(self.generateBtn, Tooltips.GEN)
         
         slidersBox.pack_start(geneSliderBox, False, False, 0)
         self.rightBox.pack_start(slidersBox, False, False, 0)
 
         ### drum box
-        drum_box = gtk.Table(rows=3, columns=2, homogeneous=True)
+        drum_box = Gtk.Table(rows=3, columns=2, homogeneous=True)
         
         drum_scroll = Gtk.ScrolledWindow()
         drum_scroll.set_policy(
@@ -397,7 +395,7 @@ class miniTamTamMain(Gtk.EventBox):
 
                 drum_name = 'drum%dkit' % kit
                 hint = self.instrumentDB.instNamed[drum_name].nameTooltip
-                self.tooltips.set_tip(drum, hint)
+                #self.tooltips.set_tip(drum, hint)
 
                 if not drum_group:
                     drum_group = drum
