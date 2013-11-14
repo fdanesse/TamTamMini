@@ -9,7 +9,6 @@ import random
 import common.Config as Config
 
 from common.Generation.GenerationConstants import GenerationConstants
-#from common.Generation.Utils import *
 from common.Util import InstrumentDB
 
 class GenRythm():

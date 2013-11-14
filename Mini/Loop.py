@@ -21,6 +21,7 @@ from common.Util.NoteDB import PARAMETER
 from common.Generation.GenerationConstants import GenerationConstants
 from common.Util import InstrumentDB
 
+
 class Loop():
     
     def __init__(self, beat, volume):
@@ -101,7 +102,6 @@ class Loop():
             tied = False,
             mode = 'mini')
 
-
     def precompose(self, maxbeat):
     
         def makeGainSequence(onsetList):
@@ -115,7 +115,7 @@ class Loop():
                         GenerationConstants.GAIN_MID_MAX_BOUNDARY,
                         GenerationConstants.GAIN_MAX_BOUNDARY)
                         
-                elif ( onset % Config.TICKS_PER_BEAT) == 0:
+                elif (onset % Config.TICKS_PER_BEAT) == 0:
                     gain = random.uniform(
                         GenerationConstants.GAIN_MID_MIN_BOUNDARY,
                         GenerationConstants.GAIN_MID_MAX_BOUNDARY)
@@ -150,7 +150,7 @@ class Loop():
                 
             pitchSequence = []
             append = pitchSequence.append
-            numberOfPitch = int( ( 1 - (regularity*.8) )  * 10 + 1 )
+            numberOfPitch = int((1 - (regularity*.8))  * 10 + 1)
             step = -(8 - (int(step * 8)))
             max = len(table_pitch)-1
             nextValue = pitchMethod.getNextValue
@@ -167,7 +167,6 @@ class Loop():
                 
             return pitchSequence
 
-
         def makeRythmSequence(barLength, density, regularity):
             
             rythmSequence = [0, ]
@@ -175,8 +174,8 @@ class Loop():
             lastOnsetTime = 0
             onsetLen = len(GenerationConstants.LOOP_TABLE_ONSET_VALUES)
 
-            onsetValue  = int((1 -  density ) * onsetLen)
-            onsetDeviation = int((1 - regularity ) * 20)
+            onsetValue  = int((1 -  density) * onsetLen)
+            onsetDeviation = int((1 - regularity) * 20)
             currentOnsetValue = onsetValue + (
                 random.randint(0, onsetDeviation) - (onsetDeviation / 2))
                 
@@ -317,7 +316,6 @@ class Loop():
                 for k in range(len(rythmSequence)):
                     loopList.append([rythmSequence[k], pitchSequence[k],
                         gainSequence[k], durationSequence[k]])
-
 
                 f = open(Config.INSTANCE_DIR + '/loops/loop' + names[beat] + '_' + str(counter) + '.ttl', 'w')
                 print "open file"
