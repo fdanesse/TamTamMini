@@ -35,7 +35,6 @@ import common.Config as Config
 from common.Util.CSoundClient import new_csound_client
 
 from Mini.miniTamTamMain import miniTamTamMain
-from common.Util.Trackpad import Trackpad
 
 from sugar.activity import activity
 
@@ -55,13 +54,9 @@ class TamTamMini(activity.Activity):
 
         self.set_title('TamTam Mini')
 
-        self.trackpad = Trackpad(self)
-        self.trackpad.setContext('mini')
-
         self.connect('notify::active', self.onActive)
         self.connect('destroy', self.onDestroy)
 
-        #load the sugar toolbar
         if Config.HAVE_TOOLBOX:
             from sugar.graphics.toolbarbox import ToolbarBox
             from sugar.activity import widgets
@@ -73,8 +68,6 @@ class TamTamMini(activity.Activity):
                 from sugar.activity.widgets import DescriptionItem
 
             except ImportError:
-                #logging.debug('DescriptionItem button is not available,' +
-                #     'toolkit version < 0.96')
                 pass
 
             else:
@@ -93,7 +86,6 @@ class TamTamMini(activity.Activity):
         self.mini = miniTamTamMain(self)
         self.mini.onActivate(arg=None)
         self.mini.updateInstrumentPanel()
-        #self.modeList[mode].regenerate()
 
         self.set_canvas(self.mini)
 

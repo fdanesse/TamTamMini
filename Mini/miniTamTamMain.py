@@ -25,7 +25,6 @@ from common.Util.NoteDB import Note
 from common.Util.CSoundClient import new_csound_client
 from common.Util import InstrumentDB
 from common.Util.Instruments import DRUMCOUNT
-from common.Util.Trackpad import Trackpad
 from common.Util import OS
 from common.Util.NoteDB import PARAMETER
 
@@ -37,7 +36,7 @@ from MiniSequencer import MiniSequencer
 from Loop import Loop
 from RythmGenerator import generator # Descripcion ?
 
-import sugar.graphics.style as style
+#import sugar.graphics.style as style
 
 from Mini.InstrumentPanel import InstrumentPanel
 from Mini.miniToolbars import playToolbar
@@ -91,7 +90,6 @@ class miniTamTamMain(gtk.EventBox):
         self.csnd.setTempo(self.tempo)
         self.noteList = []
         time.sleep(0.001) # why?
-        self.trackpad = Trackpad(self)
         
         for i in range(21):
             self.csnd.setTrackVolume(100, i)
@@ -422,8 +420,6 @@ class miniTamTamMain(gtk.EventBox):
             gtk.POLICY_AUTOMATIC)
         drum_scroll.add_with_viewport(drum_box)
         
-        row = 0
-        col = 0
         kit = 1
         drum_group = None
         
@@ -702,7 +698,7 @@ class miniTamTamMain(gtk.EventBox):
         self.volumeSliderBoxImgTop.set_from_file(
             imagefile('volume' + str(img) + '.png'))
 
-    def handlePlayButton(self, widget, data = None):
+    def handlePlayButton(self, widget, data=None):
         # use widget.get_active() == False when calling this on 'clicked'
         # use widget.get_active() == True when calling this on button-press-event
         if widget.get_active() == False:

@@ -200,11 +200,9 @@ class NoteDB():
         if not len(self.tune):
             self.addPage(-1, Page(beats, instruments=instruments)) # always have at least one page
             safe = self.tune[0]
-            #self._updateBeatsBefore(0)
 
         else:
             safe = self.tune[max(ind-1, 0)]
-            #self._updateBeatsBefore(low)
 
         for l in self.pageListeners:
             l.notifyPageDelete(which, safe)
@@ -235,8 +233,6 @@ class NoteDB():
             self._insertPage(id, after)
             after = id
             new[cp] = id
-
-        #self._updateBeatsBefore(first)
 
         for l in self.pageListeners:
             l.notifyPageDuplicate(new, first)
@@ -281,8 +277,6 @@ class NoteDB():
 
         self.tune = self.tune[:at] + sorted + self.tune[at:]
 
-        #self._updateBeatsBefore( low )
-
         for l in self.pageListeners:
             l.notifyPageMove(sorted, low, high)
 
@@ -321,7 +315,6 @@ class NoteDB():
 
             self.pages[page].beats = value
             self.pages[page].ticks = ticks
-            #self._updateBeatsBefore(self.tune.index(page))
 
         elif parameter == PARAMETER.PAGE_COLOR:
             self.pages[page].color = value
@@ -360,14 +353,13 @@ class NoteDB():
 
         return dict
 
-   #-- private --------------------------------------------
     def _newPage(self, pid, page):
 
         if pid == -1:
             pid = self._genId()
 
         self.pages[pid] = page
-        self.noteD[pid] = [{}  for i in range(Config.NUMBER_OF_TRACKS)]
+        self.noteD[pid] = [{} for i in range(Config.NUMBER_OF_TRACKS)]
         self.noteS[pid] = [[] for i in range(Config.NUMBER_OF_TRACKS)]
         self.parasiteD[pid] = [{} for i in range(Config.NUMBER_OF_TRACKS)]
         self.parasiteS[pid] = [{} for i in range(Config.NUMBER_OF_TRACKS)]
@@ -397,10 +389,6 @@ class NoteDB():
     #        self.beatsBefore[self.tune[ind]] = beats
     #        beats += self.pages[self.tune[ind]].beats
 
-
-    #=======================================================
-    # Track Functions
-
     def setInstrument(self, pages, track, instrumentId):
 
         stream = []
@@ -423,7 +411,6 @@ class NoteDB():
 
         stream = []
         for page in pages:
-            #self.pages[page].instruments[track] = instrumentId
             notes = self.getNotesByTrack(page, track)
             sub = []
 
@@ -436,9 +423,6 @@ class NoteDB():
 
         if len(stream):
             self.updateNotes(stream + [-1])
-
-    #=======================================================
-    # Note Functions
 
     def addNote(self, nid, page, track, cs, hint=False):
 
@@ -687,7 +671,6 @@ class NoteDB():
 
             p = self._readstream(stream, i)
 
-    #-- private --------------------------------------------
     def _readstream(self, stream, i):
         i[0] += 1
         return stream[i[0]]
@@ -735,10 +718,6 @@ class NoteDB():
             for par in self.parasiteList.keys():
                 p = self.parasiteS[page][track][par].pop(out)
                 self.parasiteS[page][track][par].insert(ins, p)
-
-
-    #=======================================================
-    # Clipboard Functions
 
     # stream format:
     # page id
@@ -934,9 +913,6 @@ class NoteDB():
 
         return self.clipboardArea[ind]
 
-    #=======================================================
-    # Listener Functions
-
     def addListener(self, listener, parasite=None, page=False, note=False):
 
         if listener in self.listeners:
@@ -967,7 +943,6 @@ class NoteDB():
             self._deleteParasite(listener)
             del self.parasiteList[listener]
 
-    #-- private --------------------------------------------
     def _addParasite(self, listener, parasite):
 
         for p in self.tune:
@@ -991,9 +966,6 @@ class NoteDB():
 
                 del self.parasiteD[p][t][listener]
                 del self.parasiteS[p][t][listener]
-
-    #=======================================================
-    # Get Functions
 
     def getPageCount(self):
         return len(self.pages)
@@ -1031,7 +1003,6 @@ class NoteDB():
             for i in range(Config.NUMBER_OF_TRACKS):
                 notes.extend(self.noteS[page][i])
         return notes
-
 
     def getNotesByTrack(self, page, track, listener=None):
         if listener:

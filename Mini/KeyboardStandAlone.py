@@ -1,5 +1,10 @@
-import pygtk
-pygtk.require( '2.0' )
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Corregido:
+#   12/11/2013 Flavio Danesse
+#   fdanesse@gmail.com - fdanesse@activitycentral.com
+
 import gtk
 
 import common.Config as Config
@@ -11,7 +16,6 @@ from common.Util import InstrumentDB
 
 KEY_MAP_PIANO = Config.KEY_MAP_PIANO
 
-#log = file('/home/olpc/log.tamtam','w')
 
 class KeyboardStandAlone:
     def __init__( self, recordingFunction, adjustDurationFunction, getCurrentTick, getPlayState, loop ):

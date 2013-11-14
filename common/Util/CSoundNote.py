@@ -1,23 +1,31 @@
-import common.Config as Config
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Corregido:
+#   12/11/2013 Flavio Danesse
+#   fdanesse@gmail.com - fdanesse@activitycentral.com
+
 import common.Util.InstrumentDB as InstrumentDB
 
-class CSoundNote :
-    def __init__( self,
-            onset,
-            pitch,
-            amplitude,
-            pan,
-            duration,
-            trackId,
-            instrumentId = 1, #self.instrumentDB.instNamed["flute"].instrumentId,
-            attack = 0.005,
-            decay = 0.098,
-            reverbSend = 0.1,
-            filterType = 0,
-            filterCutoff = 1000,
-            tied = False,
-            mode = 'edit',
-            instrumentId2 = -1 ):
+
+class CSoundNote():
+
+    def __init__(self,
+        onset,
+        pitch,
+        amplitude,
+        pan,
+        duration,
+        trackId,
+        instrumentId=1, #self.instrumentDB.instNamed["flute"].instrumentId,
+        attack=0.005,
+        decay=0.098,
+        reverbSend=0.1,
+        filterType=0,
+        filterCutoff=1000,
+        tied=False,
+        mode='edit',
+        instrumentId2=-1):
 
         self.instrumentDB = InstrumentDB.getRef()
 
@@ -39,30 +47,35 @@ class CSoundNote :
         self.mode = mode
         self.instrumentId2 = instrumentId2
 
-    def clone( self ):
-        return CSoundNote( self.onset, self.pitch, self.amplitude, self.pan,
-                           self.duration, self.trackId, self.instrumentId,
-                           self.attack, self.decay, self.reverbSend,
-                           self.filterType, self.filterCutoff, self.tied,
-                           self.mode, self.instrumentId2 )
+    def clone(self):
+
+        return CSoundNote(
+            self.onset, self.pitch, self.amplitude, self.pan,
+            self.duration, self.trackId, self.instrumentId,
+            self.attack, self.decay, self.reverbSend,
+            self.filterType, self.filterCutoff, self.tied,
+            self.mode, self.instrumentId2)
 
     def __getstate__unused(self):
-        return {'onset': self.onset,
-                'pitch': self.pitch,
-                'amplitude': self.amplitude,
-                'pan': self.pan,
-                'duration': self.duration,
-                'trackId': self.trackId,
-                'instrumentId': self.instrumentId,
-                'attack': self.attack,
-                'decay': self.decay,
-                'reverbSend': self.reverbSend,
-                'filterType': self.filterType,
-                'filterCutoff': self.filterCutoff,
-                'tied': self.tied,
-                'mode': self.mode }
 
-    def __setstate__unused(self,dict):
+        return {
+            'onset': self.onset,
+            'pitch': self.pitch,
+            'amplitude': self.amplitude,
+            'pan': self.pan,
+            'duration': self.duration,
+            'trackId': self.trackId,
+            'instrumentId': self.instrumentId,
+            'attack': self.attack,
+            'decay': self.decay,
+            'reverbSend': self.reverbSend,
+            'filterType': self.filterType,
+            'filterCutoff': self.filterCutoff,
+            'tied': self.tied,
+            'mode': self.mode}
+
+    def __setstate__unused(self, dict):
+
         self.onset = dict['onset']
         self.pitch = dict['pitch']
         self.amplitude = dict['amplitude']
