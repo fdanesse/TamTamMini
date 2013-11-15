@@ -39,11 +39,11 @@ from KeyboardStandAlone import KeyboardStandAlone
 from MiniSequencer import MiniSequencer
 from Loop import Loop
 from RythmGenerator import generator # Descripcion ?
-'''
+
 from Mini.InstrumentPanel import InstrumentPanel
 #from Mini.miniToolbars import playToolbar
 #from Mini.miniToolbars import recordToolbar
-'''
+
 from gettext import gettext as _
 
 import common.Util.Network as Net
@@ -429,7 +429,7 @@ class miniTamTamMain(Gtk.EventBox):
         
         if self.instrumentPanel is None:
             self.instrumentPanel = InstrumentPanel() # Descripcion: Area Derecha.
-            self.leftBox.pack_start(self.instrumentPanel)
+            self.leftBox.pack_start(self.instrumentPanel, False, False, 0)
 
         screen = Gdk.Screen.get_default()
         width = screen.get_width() - self.rightBox.get_size_request()[0]
@@ -522,7 +522,7 @@ class miniTamTamMain(Gtk.EventBox):
 
     def handleGenerationSlider(self, adj):
     
-        img = int(adj.value * 7)+1
+        img = int(adj.get_value() * 7)+1
         self.geneSliderBoxImgTop.set_from_file(
             imagefile('complex' + str(img) + '.png'))
 
@@ -553,7 +553,7 @@ class miniTamTamMain(Gtk.EventBox):
 
     def handleBeatSlider(self, adj):
     
-        img = self.scale(int(adj.value), 2, 12, 1, 11)
+        img = self.scale(int(adj.get_value()), 2, 12, 1, 11)
         self.beatSliderBoxImgTop.set_from_file(
             imagefile('beat' + str(img) + '.png'))
         self.sequencer.beat = self.beat
@@ -589,10 +589,10 @@ class miniTamTamMain(Gtk.EventBox):
     def handleTempoSliderChange(self, adj):
     
         if self.network.isPeer():
-            self.requestTempoChange(int(adj.value))
+            self.requestTempoChange(int(adj.get_value()))
             
         else:
-            self._updateTempo(int(adj.value))
+            self._updateTempo(int(adj.get_value()))
 
     def _updateTempo(self, val):
 
@@ -622,7 +622,7 @@ class miniTamTamMain(Gtk.EventBox):
 
     def handleBalanceSlider(self, adj):
         
-        self.instVolume = int(adj.value)
+        self.instVolume = int(adj.get_value())
         self.drumVolume = sqrt((100-self.instVolume) * 0.01)
         self.adjustDrumVolume()
         self.drumFillin.setVolume(self.drumVolume)
@@ -641,7 +641,7 @@ class miniTamTamMain(Gtk.EventBox):
 
     def handleReverbSlider(self, adj):
     
-        self.reverb = adj.value
+        self.reverb = adj.get_value()
         self.drumFillin.setReverb(self.reverb)
         img = int(self.scale(self.reverb, 0, 1, 0, 4))
         
@@ -652,7 +652,7 @@ class miniTamTamMain(Gtk.EventBox):
 
     def handleVolumeSlider(self, adj):
     
-        self.volume = adj.value
+        self.volume = adj.get_value()
         self.csnd.setMasterVolume(self.volume)
         img = int(self.scale(self.volume, 0, 200, 0, 3.9))
         self.volumeSliderBoxImgTop.set_from_file(
