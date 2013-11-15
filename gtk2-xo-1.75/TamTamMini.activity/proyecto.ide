@@ -1,0 +1,17 @@
+{
+    "autores":[
+        [
+            "", 
+            ""
+        ]
+    ], 
+    "categoria":"", 
+    "descripcion":"TamTamMini Corregido, simplificado y mejorado.\n12/11/2013\nFlavio Danesse - fdanesse@gmail.com - fdanesse@activitycentral.com\nRepositorio: git@github.com:fdanesse/TamTamMini.git", 
+    "licencia":"GPL3", 
+    "main":"TamTamMini.py", 
+    "mimetypes":"", 
+    "nombre":"TamTamMini", 
+    "path":"/home/flavio/Documentos/TamTamMini.activity/gtk2-xo-1.75/TamTamMini.activity", 
+    "url":"", 
+    "version":"67.0.1"
+}
