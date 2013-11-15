@@ -38,7 +38,7 @@ from Fillin import Fillin
 from KeyboardStandAlone import KeyboardStandAlone
 from MiniSequencer import MiniSequencer
 from Loop import Loop
-from RythmGenerator import generator # Descripcion ?
+from RythmGenerator import generator
 
 from Mini.InstrumentPanel import InstrumentPanel
 #from Mini.miniToolbars import playToolbar
@@ -88,7 +88,8 @@ class miniTamTamMain(Gtk.EventBox):
             self.recordStateButton,
             self.recordOverSensitivity)
             
-        self.loop = Loop(self.beat, sqrt(self.instVolume * 0.01))
+        self.loop = Loop(self.beat, sqrt(
+            self.instVolume * 0.01))
         self.csnd.setTempo(self.tempo)
         self.noteList = []
         time.sleep(0.001) # why?
@@ -104,15 +105,15 @@ class miniTamTamMain(Gtk.EventBox):
         self.csnd.setMasterVolume(self.volume)
         self.sequencer.beat = self.beat
         self.loop.beat = self.beat
-        #self.tooltips = Gtk.Tooltip()
 
-        self.mainWindowBox = Gtk.HBox() # Descripcion: Contenedor Principal
+        # Descripcion: Contenedor Principal
+        self.mainWindowBox = Gtk.HBox()
         
         self.leftBox = Gtk.VBox()
         self.rightBox = Gtk.VBox()
         
         # Descripcion: Esto está alrevés, self.rightBox está a la izquierda.
-        self.mainWindowBox.pack_start(self.rightBox, False, True, 0)
+        self.mainWindowBox.pack_start(self.rightBox, False, False, 0)
         
         # Descripcion: Esto está alrevés, self.leftBox está a la derecha.
         self.mainWindowBox.pack_start(self.leftBox, True, True, 0)
@@ -138,7 +139,8 @@ class miniTamTamMain(Gtk.EventBox):
         self.syncTimeout = None
 
         self.network = Net.Network()
-        self.network.addWatcher(self.networkStatusWatcher)
+        self.network.addWatcher(
+            self.networkStatusWatcher)
         
         self.network.connectMessage(
             Net.HT_SYNC_REPLY,
@@ -224,7 +226,7 @@ class miniTamTamMain(Gtk.EventBox):
             "button-release-event",
             self.handleGenerationSliderRelease)
             
-        #self.tooltips.set_tip(self.geneSlider, Tooltips.COMPL)
+        self.geneSlider.set_tooltip_text(Tooltips.COMPL)
         
     def __make_beatSlider(self):
         """
@@ -253,7 +255,7 @@ class miniTamTamMain(Gtk.EventBox):
             "button-release-event",
             self.handleBeatSliderRelease)
             
-        #self.tooltips.set_tip(self.beatSlider, Tooltips.BEAT)
+        self.beatSlider.set_tooltip_text(Tooltips.BEAT)
 
     def __make_tempoSlider(self):
         """
@@ -287,7 +289,7 @@ class miniTamTamMain(Gtk.EventBox):
         self.tempoSlider.connect("button-release-event",
             self.handleTempoSliderRelease)
         
-        #self.tooltips.set_tip(self.tempoSlider, Tooltips.TEMPO)
+        self.tempoSlider.set_tooltip_text(Tooltips.TEMPO)
         
     def __make_volumeSlider(self):
         """
@@ -311,7 +313,7 @@ class miniTamTamMain(Gtk.EventBox):
         self.volumeAdjustment.connect(
             "value_changed", self.handleVolumeSlider)
         
-        #self.tooltips.set_tip(self.volumeSlider, Tooltips.VOL)
+        self.volumeSlider.set_tooltip_text(Tooltips.VOL)
         
     def drawGeneration(self):
         """
@@ -362,7 +364,7 @@ class miniTamTamMain(Gtk.EventBox):
             self.handleGenerateBtn)
         
         geneSliderBox.attach(self.generateBtn, 2, 4, 4, 6)
-        #self.tooltips.set_tip(self.generateBtn, Tooltips.GEN)
+        self.generateBtn.set_tooltip_text(Tooltips.GEN)
         
         slidersBox.pack_start(geneSliderBox, False, False, 0)
         self.rightBox.pack_start(slidersBox, False, False, 0)
@@ -395,7 +397,7 @@ class miniTamTamMain(Gtk.EventBox):
 
                 drum_name = 'drum%dkit' % kit
                 hint = self.instrumentDB.instNamed[drum_name].nameTooltip
-                #self.tooltips.set_tip(drum, hint)
+                drum.set_tooltip_text(hint)
 
                 if not drum_group:
                     drum_group = drum
@@ -429,7 +431,7 @@ class miniTamTamMain(Gtk.EventBox):
         
         if self.instrumentPanel is None:
             self.instrumentPanel = InstrumentPanel() # Descripcion: Area Derecha.
-            self.leftBox.pack_start(self.instrumentPanel, False, False, 0)
+            self.leftBox.pack_start(self.instrumentPanel, True, True, 0)
 
         screen = Gdk.Screen.get_default()
         width = screen.get_width() - self.rightBox.get_size_request()[0]

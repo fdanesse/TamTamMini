@@ -5,10 +5,12 @@
 #   12/11/2013 Flavio Danesse
 #   fdanesse@gmail.com - fdanesse@activitycentral.com
 
+import time
+# FIXME: Falta traducir las categorías
+from gettext import gettext as _
+
 from gi.repository import Gtk
 from gi.repository import Gdk
-
-import time
 
 import common.Config as Config
 
@@ -42,18 +44,6 @@ class InstrumentPanel(Gtk.EventBox):
         self.loaded = False
         self.loadData = {}
         self.loadStage = [0, 0, 0]
-
-    def grab_focus(self):
-    
-        if not self.instDic:
-            return
-            
-        for widget in self.instDic.values():
-            button = widget.get_children()[0]
-            
-            if button.props.active:
-                button.grab_focus()
-                break
 
     def configure(self, setInstrument=None,
         playInstrument=None, enterMode=False,
@@ -93,7 +83,6 @@ class InstrumentPanel(Gtk.EventBox):
                 return False
 
         if self.loadStage[0] == 1:
-            #self.tooltips = Gtk.Tooltip()
             self.loadStage[0] = 2
             
             if timeout >= 0 and time.time() > timeout:
@@ -247,7 +236,7 @@ class InstrumentPanel(Gtk.EventBox):
                 ### Descripcion: Imagen en Botones de Categorias
                 self.loadData["btn"] = ImageRadioButton(
                     self.firstTbBtn,
-                    category + '.png', width=75)
+                    category + '.png', width=70)
 
                 loadStage[2] = 2
                 if timeout >= 0 and time.time() > timeout:
@@ -259,7 +248,7 @@ class InstrumentPanel(Gtk.EventBox):
             self.loadData["btn"].connect(
                 'clicked', self.handleToolbarBtnPress, category)
                 
-            #self.tooltips.set_tip(self.loadData["btn"], str(category))
+            self.loadData["btn"].set_tooltip_text(_(str(category)))
             self.loadData["btnBox"].add(self.loadData["btn"])
             
             self.toolbarBox.pack_start(
@@ -322,8 +311,8 @@ class InstrumentPanel(Gtk.EventBox):
                 if timeout >= 0 and time.time() > timeout:
                     return False
 
-            #self.tooltips.set_tip(self.loadData["instBox"], str(
-            #    self.instrumentDB.instNamed[instrument].nameTooltip))
+            self.loadData["instBox"].set_tooltip_text(str(
+                self.instrumentDB.instNamed[instrument].nameTooltip))
 
             self.loadData["instBox"].pack_start(
                 self.loadData["instButton"], False, False, 0)
@@ -351,13 +340,15 @@ class InstrumentPanel(Gtk.EventBox):
         
         self.instBox.set_property('xalign', 0.5)
         self.instBox.set_property('yalign', 0.0)
+        self.instBox.set_property('xscale', 0.0)
+        self.instBox.set_property('yscale', 0.0)
 
         box = Gtk.EventBox()
 
-        color = Gdk.color_parse(
-            Config.INSTRUMENT_GRID_COLOR)
+        #color = Gdk.color_parse(
+        #    Config.INSTRUMENT_GRID_COLOR)
 
-        box.modify_bg(Gtk.StateType.NORMAL, color)
+        #box.modify_bg(Gtk.StateType.NORMAL, color)
 
         box.add(self.instBox)
 
@@ -374,6 +365,20 @@ class InstrumentPanel(Gtk.EventBox):
         self.mainVBox.pack_start(scrollwin, True, True, 0)
         
         self.show_all()
+        '''
+        self.instBox = Gtk.EventBox()
+
+        scrollwin = Gtk.ScrolledWindow()
+
+        scrollwin.set_policy(
+            Gtk.PolicyType.NEVER,
+            Gtk.PolicyType.AUTOMATIC)
+
+        scrollwin.add_with_viewport(self.instBox)
+
+        self.mainVBox.pack_start(scrollwin, True, True, 0)
+
+        self.show_all()'''
 
     def prepareInstrumentTable(self, category='all'):
         """
@@ -396,7 +401,8 @@ class InstrumentPanel(Gtk.EventBox):
             self.instBox.remove(self.instTable)
             self.instTable.destroy()
 
-        self.instTable = Gtk.Table(rows=1, columns=6, homogeneous=True)
+        self.instTable = Gtk.Table(rows=1,
+            columns=6, homogeneous=True)
         self.instTable.set_row_spacings(0)
         self.instTable.set_col_spacings(0)
 

@@ -235,6 +235,7 @@ class ImageRadioButton(Gtk.RadioButton):
         self.set_image(self.image)
         
         self.set_property('draw-indicator', False)
+        self.set_property('label', '')
         self.show_all()
 
 
