@@ -451,14 +451,14 @@ class InstrumentPanel(Gtk.EventBox):
     def handleInstrumentButtonFocus(self, widget, event, instrument):
     
         if self._scrolled_window is None:
-            parent = widget.parent
+            parent = widget.get_parent()
             
             while parent is not None:
                 if isinstance(parent, Gtk.ScrolledWindow):
                     self._scrolled_window = parent
                     break
                     
-                parent = parent.parent
+                parent = parent.get_parent()
                 
             else:
                 return
