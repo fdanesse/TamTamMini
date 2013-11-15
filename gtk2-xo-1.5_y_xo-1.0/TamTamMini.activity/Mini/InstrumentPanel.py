@@ -41,18 +41,6 @@ class InstrumentPanel(gtk.EventBox):
         self.loadData = {}
         self.loadStage = [0, 0, 0]
 
-    def grab_focus(self):
-    
-        if not self.instDic:
-            return
-            
-        for widget in self.instDic.values():
-            button = widget.get_children()[0]
-            
-            if button.props.active:
-                button.grab_focus()
-                break
-
     def configure(self, setInstrument=None,
         playInstrument=None, enterMode=False,
         micRec=None, synthRec=None,
@@ -245,7 +233,7 @@ class InstrumentPanel(gtk.EventBox):
                 ### Descripcion: Imagen en Botones de Categorias
                 self.loadData["btn"] = ImageRadioButton(
                     self.firstTbBtn,
-                    category + '.png', width=75)
+                    category + '.png', width=95)
 
                 loadStage[2] = 2
                 if timeout >= 0 and time.time() > timeout:
@@ -296,11 +284,13 @@ class InstrumentPanel(gtk.EventBox):
             if loadStage[2] == 1:
                 try:
                     self.loadData['instButton'] = ImageRadioButton(
-                        self.firstInstButton, instrument + '.png')
+                        self.firstInstButton, instrument + '.png',
+                        width=110)
                         
                 except:
                     self.loadData["instButton"] = ImageRadioButton(
-                        self.firstInstButton, 'generic.png')
+                        self.firstInstButton, 'generic.png',
+                        width=110)
                         
                 loadStage[2] = 2
                 if timeout >= 0 and time.time() > timeout:
@@ -394,7 +384,7 @@ class InstrumentPanel(gtk.EventBox):
             self.instBox.remove(self.instTable)
             self.instTable.destroy()
 
-        self.instTable = gtk.Table(rows=1, columns=6, homogeneous=True)
+        self.instTable = gtk.Table(rows=1, columns=7, homogeneous=True)
         self.instTable.set_row_spacings(0)
         self.instTable.set_col_spacings(0)
 
@@ -407,7 +397,7 @@ class InstrumentPanel(gtk.EventBox):
             
             col += 1
             
-            if col == 6:
+            if col == 7:
                 col = 0
                 row += 1
 
@@ -525,7 +515,8 @@ class DrumPanel(gtk.EventBox):
             instBox.set_border_width(Config.PANEL_SPACING)
             
             self.drums[drumkit] = ImageRadioButton(
-                firstBtn, drumkit + '.png')
+                firstBtn, drumkit + '.png',
+                width=110)
                 
             self.drums[drumkit].clickedHandler = self.drums[drumkit].connect(
                 'clicked', self.setDrums, drumkit)
